@@ -1,0 +1,15 @@
+.profile__edit-button_container {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 18px;
+  width: 24px;
+  height: 24px;
+}
+
+@media screen and (max-width: 767px) {
+  .profile__edit-button_container {
+    margin-left: 10px;
+    width: 18px;
+    height: 18px;
+  }
+}

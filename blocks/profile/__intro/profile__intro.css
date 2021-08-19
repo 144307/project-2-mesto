@@ -1,0 +1,5 @@
+.profile__intro {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+}

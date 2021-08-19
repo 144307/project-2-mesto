@@ -1,0 +1,89 @@
+.form {
+  width: 430px;
+  height: 330px;
+  /* position: relative; */
+  color: #000;
+  background-color: #fff;
+  border-radius: 10px;
+  opacity: 1;
+  z-index: 2;
+  display: flex;
+  /* display: none; */
+  position: relative;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* .form__close-button {
+  position: absolute;
+  right: 0;
+  right: -40px;
+  top: -40px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: url(../../images/close_icon.svg) no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: 0;
+  cursor: pointer;
+}
+
+.form__close-button:hover {
+  opacity: 0.6;
+} */
+
+/* .form__width {
+  margin-right: 36px;
+  margin-left: 36px;
+} */
+
+/* .form__title {
+  margin-top: 34px;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 29px;
+  letter-spacing: 0em;
+} */
+
+/* .form__input {
+  padding-bottom: 7px;
+  display: block;
+  border: 0;
+  border-bottom: 1px solid #000;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: 0em;
+} */
+
+/* .form__button {
+  height: 50px;
+  margin-bottom: 37px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  cursor: pointer;
+  color: #fff;
+  background-color: #000;
+} */
+
+/* .form__button:hover {
+  opacity: 0.8;
+} */
+
+@media screen and (max-width: 767px) {
+  .form {
+    /* min-width: 282px; */
+    width: 282px;
+  }
+  /* .form__title {
+    font-size: 18px;
+    line-height: 22px;
+  } */
+  /* .form__width {
+    margin-right: 22px;
+    margin-left: 22px;
+  } */
+}
