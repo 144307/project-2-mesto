@@ -1,10 +1,10 @@
-.form__width {
+.my-form__width {
   margin-right: 36px;
   margin-left: 36px;
 }
 
 @media screen and (max-width: 767px) {
-  .form__width {
+  .my-form__width {
     margin-right: 22px;
     margin-left: 22px;
   }

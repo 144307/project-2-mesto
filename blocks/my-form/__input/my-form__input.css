@@ -1,8 +1,9 @@
-.form__input {
+.my-form__input {
   padding-bottom: 7px;
   display: block;
   border: 0;
-  border-bottom: 1px solid #000;
+  /* border-bottom: 1px solid #000; */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   font-size: 14px;
   font-weight: 400;
   line-height: 17px;
