@@ -1,5 +1,5 @@
 .card__title-group {
-  height: 80px;
+  min-height: 80px;
   padding-left: 21px;
   padding-right: 21px;
   display: flex;

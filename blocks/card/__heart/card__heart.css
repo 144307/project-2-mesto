@@ -1,6 +1,9 @@
 .card__heart {
   width: 22px;
   height: 22px;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
   padding: 0;
   background: url(../../../images/heart.svg) no-repeat;
   background-position: center;

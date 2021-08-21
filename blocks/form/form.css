@@ -1,6 +1,7 @@
 .form {
+  /* .not-form { */
   width: 430px;
-  height: 330px;
+  min-height: 330px;
   /* position: relative; */
   color: #000;
   background-color: #fff;
