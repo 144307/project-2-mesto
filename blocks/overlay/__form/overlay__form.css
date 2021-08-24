@@ -1,0 +1,19 @@
+.overlay__form {
+  width: 430px;
+  min-height: 330px;
+  color: #000;
+  background-color: #fff;
+  border-radius: 10px;
+  opacity: 1;
+  z-index: 2;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 767px) {
+  .overlay__form {
+    width: 282px;
+  }
+}

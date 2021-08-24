@@ -4,13 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
   <title>Путешествие по России</title>
   <link rel="stylesheet" href="./pages/index.css">
 </head>
 
 <body class="page">
-  <header class="header page__size">
+  <header class="header">
     <img class="header__logo" src="./images/Vector.svg" alt="логотип">
   </header>
   <main>
@@ -18,16 +17,12 @@
       <img class="profile__avatar" src="./images/image.jpg" alt="аватар профиля">
       <div class="profile__intro">
         <div class="profile__intro-title-group">
-          <h1 class="profile__intro-title">Жак-Ив Кусто
-            <!-- <div class="profile__edit-button_container">
-          <input class="profile__edit-button" type="submit" name="profile__edit-button" value="">
-          </div> -->
-          </h1>
+          <h1 class="profile__intro-title">Жак-Ив Кусто</h1>
+          <!-- <h1 class="profile__intro-title">Идейные соображения высшего порядка, а также укрепление и развитие структуры играет важную роль в формировании модели развития.</h1> -->
           <button class="profile__edit-button" type="button" name="profile__edit-button" value=""></button>
         </div>
-        <p class="profile__intro-subtitle">
-          Исследователь океана
-        </p>
+        <p class="profile__intro-subtitle">Исследователь океана</p>
+        <!-- <p class="profile__intro-subtitle">Идейные соображения высшего порядка, а также укрепление и развитие структуры играет важную роль в формировании модели развития.</p> -->
       </div>
       <!-- <input class="profile__add-button" type="submit" name="profile__add-button" value=""> -->
       <button class="profile__add-button" type="button" name="profile__add-button" value=""></button>
@@ -54,6 +49,7 @@
         <img class="card__image" src="./images/dombai.png" alt="Домбай">
         <div class="card__title-group">
           <h2 class="card__title">Домбай</h2>
+          <!-- <h2 class="card__title">Идейные соображения высшего порядка, а также укрепление и развитие структуры играет важную роль в формировании модели развития.</h2> -->
           <button class="card__heart" type="button" name="card__heart" value=""></button>
         </div>
       </div>
@@ -81,21 +77,20 @@
     </section>
   </main>
   <footer class="footer page__size">
-    <p>&#169; 2020 Mesto Russia</p>
+    <p class="footer__copyright">&#169; 2020 Mesto Russia</p>
   </footer>
-  <div class="overlay">
-    <div class="my-form-container">
-      <!-- <input class="my-form__close-button" type="submit" name="my-form__close-button" value=""> -->
-      <button class="my-form__close-button" type="button" name="my-form__close-button" value=""></button>
-      <div class="my-form">
-        <div class="my-form__title my-form__width">Редактировать профиль</div>
-        <input class="my-form__input my-form__width" type="text" id="my-form__input_line-one" name="my-form__input"
+  <!-- <div class="overlay"> -->
+  <div class="overlay overlay_opened">
+    <div class="overlay__form-container">
+      <button class="overlay__close-button" type="button" name="overlay__close-button" value=""></button>
+      <form class="overlay__form" name="form">
+        <h2 class="overlay__form_title overlay__form-width">Редактировать профиль</h2>
+        <input class="overlay__form_input overlay__form-width" type="text" id="overlay__form_input_line-one" name="overlay__form_input"
           placeholder="" required="">
-        <input class="my-form__input my-form__width" type="text" id="my-form__input_line-two" name="my-form__input"
+        <input class="overlay__form_input overlay__form-width" type="text" id="overlay__form_input_line-two" name="overlay__form_input"
           placeholder="" required="">
-        <input class="my-form__button my-form__width" type="submit" name="my-form__button" value="Сохранить">
-      </div>
-      <form class="form" name="form"></form>
+        <input class="overlay__form_button overlay__form-width" type="submit" name="overlay__form_button" value="Сохранить">
+      </form>
     </div>
   </div>
 </body>

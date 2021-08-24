@@ -1,4 +1,4 @@
-.my-form__title {
+.overlay__form_title {
   margin-top: 34px;
   font-size: 24px;
   font-weight: 900;
@@ -7,7 +7,7 @@
 }
 
 @media screen and (max-width: 767px) {
-  .my-form__title {
+  .overlay__form_title {
     font-size: 18px;
     line-height: 22px;
   }
