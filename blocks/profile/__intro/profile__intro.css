@@ -1,5 +1,6 @@
 .profile__intro {
   /* width: 100%; */
+  min-width: calc(100% - 168px - 150px);
   align-self: center;
   display: flex;
   flex-direction: column;

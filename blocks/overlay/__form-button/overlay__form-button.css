@@ -1,4 +1,4 @@
-.overlay__form_button {
+.overlay__form-button {
   height: 50px;
   margin-bottom: 37px;
   display: flex;
@@ -16,12 +16,12 @@
   text-align: center;
 }
 
-.overlay__form_button:hover {
+.overlay__form-button:hover {
   opacity: 0.8;
 }
 
 @media screen and (max-width: 767px) {
-  .overlay__form_button {
+  .overlay__form-button {
     height: 46px;
   }
 }

@@ -15,7 +15,7 @@
   <main>
     <section class="profile page__size">
       <img class="profile__avatar" src="./images/image.jpg" alt="аватар профиля">
-      <div class="profile__intro">
+      <div class="profile__intro page__size">
         <div class="profile__intro-title-group">
           <h1 class="profile__intro-title">Жак-Ив Кусто</h1>
           <!-- <h1 class="profile__intro-title">Идейные соображения высшего порядка, а также укрепление и развитие структуры играет важную роль в формировании модели развития.</h1> -->
@@ -32,9 +32,6 @@
         <img class="card__image" src="./images/image_1.png" alt="Карачаевск">
         <div class="card__title-group">
           <h2 class="card__title">Карачаевск</h2>
-          <!-- <div class="card__heart-container">
-              <input class="card__heart" type="submit" name="card__heart" value="">
-            </div> -->
           <button class="card__heart" type="button" name="card__heart" value=""></button>
         </div>
       </div>
@@ -48,8 +45,8 @@
       <div class="card">
         <img class="card__image" src="./images/dombai.png" alt="Домбай">
         <div class="card__title-group">
-          <h2 class="card__title">Домбай</h2>
-          <!-- <h2 class="card__title">Идейные соображения высшего порядка, а также укрепление и развитие структуры играет важную роль в формировании модели развития.</h2> -->
+          <!-- <h2 class="card__title">Домбай</h2> -->
+          <h2 class="card__title">Идейные соображения высшего порядка, а также укрепление и развитие структуры играет важную роль в формировании модели развития.</h2>
           <button class="card__heart" type="button" name="card__heart" value=""></button>
         </div>
       </div>
@@ -81,17 +78,17 @@
   </footer>
   <!-- <div class="overlay"> -->
   <div class="overlay overlay_opened">
-    <div class="overlay__form-container">
-      <button class="overlay__close-button" type="button" name="overlay__close-button" value=""></button>
-      <form class="overlay__form" name="form">
-        <h2 class="overlay__form_title overlay__form-width">Редактировать профиль</h2>
-        <input class="overlay__form_input overlay__form-width" type="text" id="overlay__form_input_line-one" name="overlay__form_input_line-one"
-          placeholder="" required="">
-        <input class="overlay__form_input overlay__form-width" type="text" id="overlay__form_input_line-two" name="overlay__form_input_line-one"
-          placeholder="" required="">
-        <input class="overlay__form_button overlay__form-width" type="submit" name="overlay__form_button" value="Сохранить">
-      </form>
-    </div>
+      <div class="overlay__container">
+        <button class="overlay__close-button" type="button" name="overlay__close-button" value=""></button>
+        <div class="overlay__form" name="form">
+          <h2 class="overlay__form-title overlay__form-width">Редактировать профиль</h2>
+          <input class="overlay__form-input overlay__form-width" type="text" id="overlay__form-input_line-one" name="overlay__form-input_line-one"
+            placeholder="" required="">
+          <input class="overlay__form-input overlay__form-width" type="text" id="overlay__form-input_line-two" name="overlay__form-input_line-one"
+            placeholder="" required="">
+          <input class="overlay__form-button overlay__form-width" type="submit" name="overlay__form-button" value="Сохранить">
+        </div>
+      </div>
   </div>
 </body>
 

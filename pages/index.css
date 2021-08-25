@@ -20,12 +20,13 @@
 @import url(../blocks/card/__heart/card__heart.css);
 @import url(../blocks/card/__heart/_selected/card__heart_selected.css);
 @import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__copyright/footer__copyright.css  );
 @import url(../blocks/overlay/overlay.css);
 @import url(../blocks/overlay/_opened/overlay_opened.css);
-@import url(../blocks/overlay/__form-container/overlay__form-container.css);
+@import url(../blocks/overlay/__container/overlay__container.css);
 @import url(../blocks/overlay/__close-button/overlay__close-button.css);
 @import url(../blocks/overlay/__form/overlay__form.css);
 @import url(../blocks/overlay/__form-width/overlay__form-width.css);
-@import url(../blocks/overlay/__form/_title/overlay__form_title.css);
-@import url(../blocks/overlay/__form/_input/overlay__form_input.css);
-@import url(../blocks/overlay/__form/_button/overlay__form_button.css);
+@import url(../blocks/overlay/__form-title/overlay__form-title.css);
+@import url(../blocks/overlay/__form-input/overlay__form-input.css);
+@import url(../blocks/overlay/__form-button/overlay__form-button.css);

@@ -1,0 +1,17 @@
+.overlay__container {
+  position: relative;
+}
+
+/* <div>  - попап
+  <div> - контейнер попапа, который и является белым окошком
+     Кнопка закрытия попапа и тег <form> с атрибутом name
+  </div>
+</div>  */
+
+/* DIV.overlay__container
+    BUTTON.overlay__close-button
+    DIV.overlay__form
+        H2.overlay__form_title overlay__form-width
+        INPUT.overlay__form_input overlay__form-width
+        INPUT.overlay__form_input overlay__form-width
+        INPUT.overlay__form_button overlay__form-width */
