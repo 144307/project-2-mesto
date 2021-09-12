@@ -72,29 +72,35 @@ const initialCards = [
   },
 ];
 
+function add_like() {
+  console.log("add_like");
+  // heart_selected.svg
+  this.classList.toggle("card__heart_selected");
+}
+
 function create_card(name, url) {
   let elements = document.querySelector(".elements");
   elements.insertAdjacentHTML(
     "afterbegin",
-    `<div class="card">
-    <img
-      class="card__image"
-      src="${url}"
-      alt="Карачаевск"
-    />
-    <div class="card__title-group">
-      <h2 class="card__title">${name}</h2>
-      <button
-        class="card__heart"
-        type="button"
-        name="card__heart"
-        value=""
-      ></button>
-    </div>
-  </div>`
+    `
+<div class="card">
+  <img class="card__image" src="${url}" alt="Карачаевск" />
+  <div class="card__title-group">
+    <h2 class="card__title">${name}</h2>
+    <button
+      class="card__heart"
+      type="button"
+      name="card__heart"
+      value=""
+    ></button>
+  </div>
+</div>
+`
   );
-  // refresh();
-  // like_buttons = document.querySelectorAll(".card__heart");
+  let like_buttons = document.querySelectorAll(".card__heart");
+  like_buttons.forEach(function (button) {
+    button.addEventListener("click", add_like);
+  });
 }
 
 for (let i = 0; i < initialCards.length; i++) {
@@ -130,13 +136,13 @@ function add_button_func() {
 
 add_button.addEventListener("click", add_button_func);
 
-function add_like() {
-  console.log("add_like");
-  // heart_selected.svg
-  this.classList.toggle("card__heart_selected");
-}
+// function add_like() {
+//   console.log("add_like");
+//   // heart_selected.svg
+//   this.classList.toggle("card__heart_selected");
+// }
 
-let like_buttons = document.querySelectorAll(".card__heart");
-like_buttons.forEach(function (button) {
-  button.addEventListener("click", add_like);
-});
+// let like_buttons = document.querySelectorAll(".card__heart");
+// like_buttons.forEach(function (button) {
+//   button.addEventListener("click", add_like);
+// });
