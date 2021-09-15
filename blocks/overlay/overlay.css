@@ -12,3 +12,15 @@
   z-index: 1;
   /* display: none; */
 }
+
+.overlay__image-popup {
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay__image-popup-photo {
+  max-width: 75vw;
+  max-height: 75vh;
+}
+
+.overlay__image-popup-tilte {}

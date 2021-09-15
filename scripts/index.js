@@ -1,49 +1,7 @@
-let edit_button = document.querySelector(".profile__edit-button");
 let overlay = document.querySelector(".overlay");
 let profile_name = document.querySelector(".profile__intro-title");
 let profile_job = document.querySelector(".profile__intro-subtitle");
-let close_button = document.querySelector(".overlay__close-button");
-let submit_button = document.querySelector(".overlay__form-button");
-let form = document.querySelector(".overlay__form");
-let form_title = document.querySelector(".overlay__form-title");
-
-// let like_buttons = document.querySelectorAll(".card__heart");
-// function refresh() {
-//   console.log("refresh");
-//   like_buttons = document.querySelectorAll(".card__heart");
-// }
-
-function submit_title_changes(submit) {
-  submit.preventDefault();
-  let input_name = document.getElementById("overlay__form-input_line-one");
-  let input_job = document.getElementById("overlay__form-input_line-two");
-  profile_name.innerHTML = input_name.value;
-  profile_job.innerHTML = input_job.value;
-  overlay.classList.remove("overlay_opened");
-}
-
-function edit_button_func() {
-  console.log("profile__edit-button");
-  overlay.classList.add("overlay_opened");
-  let input_name = document.getElementById("overlay__form-input_line-one");
-  let input_job = document.getElementById("overlay__form-input_line-two");
-  input_name.value = profile_name.textContent;
-  input_job.value = profile_job.textContent;
-  form.addEventListener("submit", submit_title_changes, true);
-}
-
-function overlay_close_button() {
-  console.log("overlay_close_button");
-  let input_name = document.getElementById("overlay__form-input_line-one");
-  let input_job = document.getElementById("overlay__form-input_line-two");
-  input_name.value = "";
-  input_job.value = "";
-  overlay.classList.remove("overlay_opened");
-}
-
-edit_button.addEventListener("click", edit_button_func);
-close_button.addEventListener("click", overlay_close_button);
-// form.addEventListener("submit", submit_title_changes, true);
+let overlay_container = document.querySelector(".overlay__container");
 
 const initialCards = [
   {
@@ -72,10 +30,42 @@ const initialCards = [
   },
 ];
 
+function overlay_close() {
+  let overlay_popup = document.querySelector(".overlay__image-popup");
+
+  overlay.classList.remove("overlay_opened");
+  if (typeof form !== "undefined") {
+    form.remove();
+  } else if (typeof overlay_popup !== "undefined") {
+    overlay_popup.remove();
+  }
+}
+
 function add_like() {
-  console.log("add_like");
-  // heart_selected.svg
   this.classList.toggle("card__heart_selected");
+}
+
+function remove_card() {
+  console.log(this.closest(".card"));
+  this.closest(".card").remove();
+}
+
+function expose_image() {
+  // image_overlay.classList.add("overlay_opened");
+  overlay.classList.add("overlay_opened");
+  overlay_container.insertAdjacentHTML(
+    "beforeend",
+    `
+  <div class="overlay__image-popup">
+    <img class="overlay__image-popup-photo" src="./images/test_image.jpg" />
+    <div class="overlay__image-popup-tilte">
+    overlay__image-popup-tilte
+    </div>
+  </div>
+`
+  );
+  // let overlay_popup = document.querySelector(".overlay__image-popup");
+  // console.log("overlay_popup =", overlay_popup);
 }
 
 function create_card(name, url) {
@@ -84,6 +74,7 @@ function create_card(name, url) {
     "afterbegin",
     `
 <div class="card">
+  <div class="card__delete-button"></div>
   <img class="card__image" src="${url}" alt="Карачаевск" />
   <div class="card__title-group">
     <h2 class="card__title">${name}</h2>
@@ -98,8 +89,16 @@ function create_card(name, url) {
 `
   );
   let like_buttons = document.querySelectorAll(".card__heart");
-  like_buttons.forEach(function (button) {
-    button.addEventListener("click", add_like);
+  like_buttons.forEach(function (like_button) {
+    like_button.addEventListener("click", add_like);
+  });
+  let delete_buttons = document.querySelectorAll(".card__delete-button");
+  delete_buttons.forEach(function (delete_button) {
+    delete_button.addEventListener("click", remove_card);
+  });
+  let image_buttons = document.querySelectorAll(".card__image");
+  image_buttons.forEach(function (image_button) {
+    image_button.addEventListener("click", expose_image);
   });
 }
 
@@ -107,10 +106,17 @@ for (let i = 0; i < initialCards.length; i++) {
   create_card(initialCards[i].name, initialCards[i].link);
 }
 
-let add_button = document.querySelector(".profile__add-button");
+function submit_title_changes(submit) {
+  submit.preventDefault();
+  let input_name = document.getElementById("overlay__form-input_line-one");
+  let input_job = document.getElementById("overlay__form-input_line-two");
+  profile_name.innerHTML = input_name.value;
+  profile_job.innerHTML = input_job.value;
+  overlay.classList.remove("overlay_opened");
+  overlay_close();
+}
 
-function test_create_card(submit) {
-  console.log("test_create_card");
+function submit_card_creation(submit) {
   submit.preventDefault();
   let input_name = document.getElementById("overlay__form-input_line-one");
   let input_job = document.getElementById("overlay__form-input_line-two");
@@ -118,31 +124,103 @@ function test_create_card(submit) {
   input_name.value = "";
   input_job.value = "";
   overlay.classList.remove("overlay_opened");
+  overlay_close();
+}
+
+function edit_button_func() {
+  overlay.classList.add("overlay_opened");
+  overlay_container.insertAdjacentHTML(
+    "beforeend",
+    `
+<form class="overlay__form" name="form">
+  <h2 class="overlay__form-title overlay__form-width">
+    Редактировать профиль
+  </h2>
+  <input
+    class="overlay__form-input overlay__form-width"
+    type="text"
+    id="overlay__form-input_line-one"
+    name="overlay__form-input_line-one"
+    placeholder=""
+    required=""
+    autocomplete="off"
+  />
+  <input
+    class="overlay__form-input overlay__form-width"
+    type="text"
+    id="overlay__form-input_line-two"
+    name="overlay__form-input_line-two"
+    placeholder=""
+    required=""
+    autocomplete="off"
+  />
+  <input
+    class="overlay__form-button overlay__form-width"
+    type="submit"
+    name="overlay__form-button"
+    value="Сохранить"
+  />
+</form>
+`
+  );
+  let input_name = document.getElementById("overlay__form-input_line-one");
+  let input_job = document.getElementById("overlay__form-input_line-two");
+  input_name.value = profile_name.textContent;
+  input_job.value = profile_job.textContent;
+
+  let form = document.querySelector(".overlay__form");
+  form.addEventListener("submit", submit_title_changes, true);
 }
 
 function add_button_func() {
-  console.log("add_button_func");
+  overlay_container.insertAdjacentHTML(
+    "beforeend",
+    `
+<form class="overlay__form" name="form">
+  <h2 class="overlay__form-title overlay__form-width">
+    Новое место
+  </h2>
+  <input
+    class="overlay__form-input overlay__form-width"
+    type="text"
+    id="overlay__form-input_line-one"
+    name="overlay__form-input_line-one"
+    placeholder=""
+    required=""
+    autocomplete="off"
+  />
+  <input
+    class="overlay__form-input overlay__form-width"
+    type="text"
+    id="overlay__form-input_line-two"
+    name="overlay__form-input_line-two"
+    placeholder=""
+    required=""
+    autocomplete="off"
+  />
+  <input
+    class="overlay__form-button overlay__form-width"
+    type="submit"
+    name="overlay__form-button"
+    value="Создать"
+  />
+</form>
+`
+  );
   overlay.classList.add("overlay_opened");
-  // form_title.textContent = "Новое место";
-  form_title.insertAdjacentText = "Новое место";
   let input_name = document.getElementById("overlay__form-input_line-one");
   let input_job = document.getElementById("overlay__form-input_line-two");
   input_name.setAttribute("placeholder", "Название");
   input_job.setAttribute("placeholder", "Ссылка на картинку");
-  submit_button.value = "Создать";
-  // submit_button.addEventListener("submit", test_create_card, true);
-  form.addEventListener("submit", test_create_card, true);
+  // submit_button.value = "Создать";
+  let form = document.querySelector(".overlay__form");
+  form.addEventListener("submit", submit_card_creation, true);
 }
 
+let edit_button = document.querySelector(".profile__edit-button");
+let add_button = document.querySelector(".profile__add-button");
+let close_button = document.querySelector(".overlay__close-button");
+
+close_button.addEventListener("click", overlay_close);
+edit_button.addEventListener("click", edit_button_func);
 add_button.addEventListener("click", add_button_func);
-
-// function add_like() {
-//   console.log("add_like");
-//   // heart_selected.svg
-//   this.classList.toggle("card__heart_selected");
-// }
-
-// let like_buttons = document.querySelectorAll(".card__heart");
-// like_buttons.forEach(function (button) {
-//   button.addEventListener("click", add_like);
-// });
