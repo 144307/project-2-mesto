@@ -31,3 +31,6 @@
 @import url(../blocks/overlay/__form-title/overlay__form-title.css);
 @import url(../blocks/overlay/__form-input/overlay__form-input.css);
 @import url(../blocks/overlay/__form-button/overlay__form-button.css);
+@import url(../blocks/overlay/__image-popup/overlay__image-popup.css);
+@import url(../blocks/overlay/__image-popup-photo/overlay__image-popup-photo.css);
+@import url(../blocks/overlay/__image-popup-tilte/overlay__image-popup-tilte.css);

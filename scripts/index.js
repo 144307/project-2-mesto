@@ -31,7 +31,7 @@ const initialCards = [
 ];
 
 function overlay_close() {
-  console.log("overlay_close");
+  // console.log("overlay_close");
   let overlay_popup = document.querySelector(".overlay__image-popup");
 
   overlay.classList.remove("overlay_opened");
@@ -57,17 +57,15 @@ function remove_card() {
 }
 
 function expose_image() {
-  // overlay_container.style.visibility = "visible";
   overlay.classList.add("overlay_opened");
   overlay.style.visibility = "visible";
-  // overlay.style.opacity = "1";
   overlay_container.insertAdjacentHTML(
     "beforeend",
     `
   <div class="overlay__image-popup">
     <img class="overlay__image-popup-photo" src="${this.src}" />
     <div class="overlay__image-popup-tilte">
-    overlay__image-popup-tilte
+    ${this.alt}
     </div>
   </div>
 `
@@ -88,7 +86,7 @@ function create_card(name, url) {
     `
 <div class="card">
   <div class="card__delete-button"></div>
-  <img class="card__image" src="${url}" alt="" />
+  <img class="card__image" src="${url}" alt="${name}" />
   <div class="card__title-group">
     <h2 class="card__title">${name}</h2>
     <button
