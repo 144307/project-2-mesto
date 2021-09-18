@@ -30,31 +30,6 @@ const initialCards = [
   },
 ];
 
-// function setOpacity(opacity) {
-//   fading_div.style.opacity = opacity / 100;
-//   fading_div.style.filter = "alpha(opacity=" + opacity + ")";
-// }
-
-// function fadeOut(opacity) {
-//   setOpacity(opacity);
-//   if (opacity == 1) {
-//     fading_div.style.display = "none";
-//     done = true;
-//   }
-// }
-
-// function fadeIn(opacity) {
-//   setOpacity(opacity);
-//   if (opacity == 1) {
-//     fading_div.style.display = "block";
-//   }
-//   if (opacity == 100) {
-//     done = true;
-//   }
-// }
-
-// setTimeout("fadeIn(" + i + ")", i * 5);
-
 function overlay_close() {
   console.log("overlay_close");
   let overlay_popup = document.querySelector(".overlay__image-popup");
@@ -90,7 +65,7 @@ function expose_image() {
     "beforeend",
     `
   <div class="overlay__image-popup">
-    <img class="overlay__image-popup-photo" src="./images/test_image.jpg" />
+    <img class="overlay__image-popup-photo" src="${this.src}" />
     <div class="overlay__image-popup-tilte">
     overlay__image-popup-tilte
     </div>
@@ -113,7 +88,7 @@ function create_card(name, url) {
     `
 <div class="card">
   <div class="card__delete-button"></div>
-  <img class="card__image" src="${url}" alt="Карачаевск" />
+  <img class="card__image" src="${url}" alt="" />
   <div class="card__title-group">
     <h2 class="card__title">${name}</h2>
     <button
