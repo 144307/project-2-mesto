@@ -30,15 +30,46 @@ const initialCards = [
   },
 ];
 
+// function setOpacity(opacity) {
+//   fading_div.style.opacity = opacity / 100;
+//   fading_div.style.filter = "alpha(opacity=" + opacity + ")";
+// }
+
+// function fadeOut(opacity) {
+//   setOpacity(opacity);
+//   if (opacity == 1) {
+//     fading_div.style.display = "none";
+//     done = true;
+//   }
+// }
+
+// function fadeIn(opacity) {
+//   setOpacity(opacity);
+//   if (opacity == 1) {
+//     fading_div.style.display = "block";
+//   }
+//   if (opacity == 100) {
+//     done = true;
+//   }
+// }
+
+// setTimeout("fadeIn(" + i + ")", i * 5);
+
 function overlay_close() {
+  console.log("overlay_close");
   let overlay_popup = document.querySelector(".overlay__image-popup");
 
   overlay.classList.remove("overlay_opened");
-  if (typeof form !== "undefined") {
-    form.remove();
-  } else if (typeof overlay_popup !== "undefined") {
-    overlay_popup.remove();
-  }
+  // overlay.style.visibility = "visible";
+  setTimeout(() => {
+    overlay.classList.remove("overlay_opened");
+    overlay.style.visibility = "hidden";
+    if (typeof form !== "undefined") {
+      form.remove();
+    } else if (typeof overlay_popup !== "undefined") {
+      overlay_popup.remove();
+    }
+  }, 200);
 }
 
 function add_like() {
@@ -51,8 +82,10 @@ function remove_card() {
 }
 
 function expose_image() {
-  // image_overlay.classList.add("overlay_opened");
+  // overlay_container.style.visibility = "visible";
   overlay.classList.add("overlay_opened");
+  overlay.style.visibility = "visible";
+  // overlay.style.opacity = "1";
   overlay_container.insertAdjacentHTML(
     "beforeend",
     `
@@ -64,6 +97,11 @@ function expose_image() {
   </div>
 `
   );
+
+  // visibility: hidden;
+  // opacity: 0;
+  // transition: visibility 0.3s linear,opacity 0.3s linear;
+
   // let overlay_popup = document.querySelector(".overlay__image-popup");
   // console.log("overlay_popup =", overlay_popup);
 }
@@ -129,6 +167,7 @@ function submit_card_creation(submit) {
 
 function edit_button_func() {
   overlay.classList.add("overlay_opened");
+  overlay.style.visibility = "visible";
   overlay_container.insertAdjacentHTML(
     "beforeend",
     `
@@ -167,12 +206,13 @@ function edit_button_func() {
   let input_job = document.getElementById("overlay__form-input_line-two");
   input_name.value = profile_name.textContent;
   input_job.value = profile_job.textContent;
-
-  let form = document.querySelector(".overlay__form");
+  // let form = document.querySelector(".overlay__form");
   form.addEventListener("submit", submit_title_changes, true);
 }
 
 function add_button_func() {
+  overlay.classList.add("overlay_opened");
+  overlay.style.visibility = "visible";
   overlay_container.insertAdjacentHTML(
     "beforeend",
     `
@@ -207,13 +247,11 @@ function add_button_func() {
 </form>
 `
   );
-  overlay.classList.add("overlay_opened");
   let input_name = document.getElementById("overlay__form-input_line-one");
   let input_job = document.getElementById("overlay__form-input_line-two");
   input_name.setAttribute("placeholder", "Название");
   input_job.setAttribute("placeholder", "Ссылка на картинку");
-  // submit_button.value = "Создать";
-  let form = document.querySelector(".overlay__form");
+  // let form = document.querySelector(".overlay__form");
   form.addEventListener("submit", submit_card_creation, true);
 }
 

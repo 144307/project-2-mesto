@@ -1,6 +1,9 @@
 .overlay__container {
   opacity: 1;
   position: relative;
+  /* visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear; */
 }
 
 @media screen and (max-width: 767px) {
