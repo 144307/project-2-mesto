@@ -10,25 +10,7 @@
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
-  /*  */
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.2s linear;
 }
-
-/* .overlay__image-popup {
-  display: flex;
-  flex-direction: column;
-} */
-
-/* .overlay__image-popup-photo {
-  max-width: 75vw;
-  max-height: 75vh;
-} */
-
-/* .overlay__image-popup-tilte {
-  margin-top: 10px;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 15px;
-} */

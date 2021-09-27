@@ -50,6 +50,41 @@
           name="overlay__close-button"
           value=""
         ></button>
+        <form class="overlay__form" name="form">
+          <h2 class="overlay__form-title overlay__form-width">
+            Title
+          </h2>
+          <input
+            class="overlay__form-input overlay__form-width"
+            type="text"
+            id="overlay__form-input_line-one"
+            name="overlay__form-input_line-one"
+            placeholder=""
+            required=""
+            autocomplete="off"
+          />
+          <input
+            class="overlay__form-input overlay__form-width"
+            type="text"
+            id="overlay__form-input_line-two"
+            name="overlay__form-input_line-two"
+            placeholder=""
+            required=""
+            autocomplete="off"
+          />
+          <input
+            class="overlay__form-button overlay__form-width"
+            type="submit"
+            name="overlay__form-button"
+            value="Button"
+          />
+        </form>
+        <div class="overlay__image-popup">
+          <img class="overlay__image-popup-photo" src="" />
+          <div class="overlay__image-popup-tilte">
+            ${image.currentTarget.alt}
+          </div>
+        </div>
       </div>
     </div>
     <script src="./scripts/index.js"></script>

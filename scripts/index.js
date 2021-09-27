@@ -1,7 +1,9 @@
-let overlay = document.querySelector(".overlay");
-let profile_name = document.querySelector(".profile__intro-title");
-let profile_job = document.querySelector(".profile__intro-subtitle");
-let overlay_container = document.querySelector(".overlay__container");
+const overlay = document.querySelector(".overlay");
+let profileName = document.querySelector(".profile__intro-title");
+let profileJob = document.querySelector(".profile__intro-subtitle");
+const overlayContainer = document.querySelector(".overlay__container");
+
+const imagePopup = document.querySelector(".overlay__image-popup");
 
 const initialCards = [
   {
@@ -30,208 +32,146 @@ const initialCards = [
   },
 ];
 
-function overlay_close() {
-  // console.log("overlay_close");
-  let overlay_popup = document.querySelector(".overlay__image-popup");
-
+function closeOverlay() {
+  let inputName = document.getElementById("overlay__form-input_line-one");
+  let inputJob = document.getElementById("overlay__form-input_line-two");
   overlay.classList.remove("overlay_opened");
-  // overlay.style.visibility = "visible";
   setTimeout(() => {
-    overlay.classList.remove("overlay_opened");
     overlay.style.visibility = "hidden";
-    if (typeof form !== "undefined") {
-      form.remove();
-    } else if (typeof overlay_popup !== "undefined") {
-      overlay_popup.remove();
-    }
   }, 200);
+  form.style.display = "none";
+  imagePopup.style.display = "none";
+  inputName.value = "";
+  inputJob.value = "";
+  form.removeEventListener("submit", submit_card_creation, true);
+  form.removeEventListener("submit", submit_title_changes, true);
 }
 
-function add_like() {
-  this.classList.toggle("card__heart_selected");
+function add_like(like_button) {
+  like_button.currentTarget.classList.toggle("card__heart_selected");
 }
 
-function remove_card() {
-  console.log(this.closest(".card"));
-  this.closest(".card").remove();
+function remove_card(card) {
+  card.currentTarget.closest(".card").remove();
 }
 
-function expose_image() {
+function expose_image(image) {
+  const overlayImage = document.querySelector(".overlay__image-popup-photo");
+  const overlayImageTitle = document.querySelector(
+    ".overlay__image-popup-tilte"
+  );
+  overlayImage.setAttribute("src", image.currentTarget.src);
+  overlayImageTitle.textContent = image.currentTarget.alt;
+  imagePopup.style.display = "flex";
   overlay.classList.add("overlay_opened");
   overlay.style.visibility = "visible";
-  overlay_container.insertAdjacentHTML(
-    "beforeend",
-    `
-  <div class="overlay__image-popup">
-    <img class="overlay__image-popup-photo" src="${this.src}" />
-    <div class="overlay__image-popup-tilte">
-    ${this.alt}
-    </div>
-  </div>
-`
-  );
-
-  // visibility: hidden;
-  // opacity: 0;
-  // transition: visibility 0.3s linear,opacity 0.3s linear;
-
-  // let overlay_popup = document.querySelector(".overlay__image-popup");
-  // console.log("overlay_popup =", overlay_popup);
 }
 
 function create_card(name, url) {
+  let card = document.createElement("div");
+  card.classList.add("card");
+  let card__delete_button = document.createElement("div");
+  card__delete_button.classList.add("card__delete-button");
+  let card__image = document.createElement("img");
+  card__image.classList.add("card__image");
+  card__image.setAttribute("src", url);
+  card__image.setAttribute("alt", name);
+  let card__title_group = document.createElement("div");
+  card__title_group.classList.add("card__title-group");
+  let card__title = document.createElement("h2");
+  card__title.classList.add("card__title");
+  card__title.textContent = name;
+  let card__heart = document.createElement("button");
+  card__heart.classList.add("card__heart");
+  card__heart.type = "button";
+  card__heart.name = "card__heart";
+  card__heart.value = "";
+
+  card.append(card__delete_button, card__image, card__title_group);
+  card__title_group.append(card__title);
+  card__title_group.append(card__heart);
+
+  return card;
+}
+
+for (let i = 0; i < initialCards.length; i++) {
+  let card = create_card(initialCards[i].name, initialCards[i].link);
+
   let elements = document.querySelector(".elements");
-  elements.insertAdjacentHTML(
-    "afterbegin",
-    `
-<div class="card">
-  <div class="card__delete-button"></div>
-  <img class="card__image" src="${url}" alt="${name}" />
-  <div class="card__title-group">
-    <h2 class="card__title">${name}</h2>
-    <button
-      class="card__heart"
-      type="button"
-      name="card__heart"
-      value=""
-    ></button>
-  </div>
-</div>
-`
-  );
-  let like_buttons = document.querySelectorAll(".card__heart");
-  like_buttons.forEach(function (like_button) {
-    like_button.addEventListener("click", add_like);
+  elements.prepend(card);
+  let likeButtons = document.querySelectorAll(".card__heart");
+  likeButtons.forEach(function (likeButton) {
+    likeButton.addEventListener("click", add_like);
   });
-  let delete_buttons = document.querySelectorAll(".card__delete-button");
-  delete_buttons.forEach(function (delete_button) {
+  let deleteButtons = document.querySelectorAll(".card__delete-button");
+  deleteButtons.forEach(function (delete_button) {
     delete_button.addEventListener("click", remove_card);
   });
-  let image_buttons = document.querySelectorAll(".card__image");
-  image_buttons.forEach(function (image_button) {
+  let imageButtons = document.querySelectorAll(".card__image");
+  imageButtons.forEach(function (image_button) {
     image_button.addEventListener("click", expose_image);
   });
 }
 
-for (let i = 0; i < initialCards.length; i++) {
-  create_card(initialCards[i].name, initialCards[i].link);
-}
-
 function submit_title_changes(submit) {
   submit.preventDefault();
-  let input_name = document.getElementById("overlay__form-input_line-one");
-  let input_job = document.getElementById("overlay__form-input_line-two");
-  profile_name.innerHTML = input_name.value;
-  profile_job.innerHTML = input_job.value;
-  overlay.classList.remove("overlay_opened");
-  overlay_close();
+  let inputName = document.getElementById("overlay__form-input_line-one");
+  let inputJob = document.getElementById("overlay__form-input_line-two");
+  profileName.innerHTML = inputName.value;
+  profileJob.innerHTML = inputJob.value;
+  closeOverlay();
 }
 
 function submit_card_creation(submit) {
   submit.preventDefault();
-  let input_name = document.getElementById("overlay__form-input_line-one");
-  let input_job = document.getElementById("overlay__form-input_line-two");
-  create_card(input_name.value, input_job.value);
-  input_name.value = "";
-  input_job.value = "";
-  overlay.classList.remove("overlay_opened");
-  overlay_close();
+  let inputName = document.getElementById("overlay__form-input_line-one");
+  let inputJob = document.getElementById("overlay__form-input_line-two");
+  let card = create_card(inputName.value, inputJob.value);
+  let elements = document.querySelector(".elements");
+  elements.prepend(card);
+  let likeButtons = document.querySelectorAll(".card__heart");
+  likeButtons.forEach(function (likeButton) {
+    likeButton.addEventListener("click", add_like);
+  });
+  let deleteButtons = document.querySelectorAll(".card__delete-button");
+  deleteButtons.forEach(function (delete_button) {
+    delete_button.addEventListener("click", remove_card);
+  });
+  let imageButtons = document.querySelectorAll(".card__image");
+  imageButtons.forEach(function (image_button) {
+    image_button.addEventListener("click", expose_image);
+  });
+  closeOverlay();
 }
 
-function edit_button_func() {
+function openEditButtoForm() {
+  form.style.display = "flex";
   overlay.classList.add("overlay_opened");
   overlay.style.visibility = "visible";
-  overlay_container.insertAdjacentHTML(
-    "beforeend",
-    `
-<form class="overlay__form" name="form">
-  <h2 class="overlay__form-title overlay__form-width">
-    Редактировать профиль
-  </h2>
-  <input
-    class="overlay__form-input overlay__form-width"
-    type="text"
-    id="overlay__form-input_line-one"
-    name="overlay__form-input_line-one"
-    placeholder=""
-    required=""
-    autocomplete="off"
-  />
-  <input
-    class="overlay__form-input overlay__form-width"
-    type="text"
-    id="overlay__form-input_line-two"
-    name="overlay__form-input_line-two"
-    placeholder=""
-    required=""
-    autocomplete="off"
-  />
-  <input
-    class="overlay__form-button overlay__form-width"
-    type="submit"
-    name="overlay__form-button"
-    value="Сохранить"
-  />
-</form>
-`
-  );
-  let input_name = document.getElementById("overlay__form-input_line-one");
-  let input_job = document.getElementById("overlay__form-input_line-two");
-  input_name.value = profile_name.textContent;
-  input_job.value = profile_job.textContent;
+  let inputName = document.getElementById("overlay__form-input_line-one");
+  let inputJob = document.getElementById("overlay__form-input_line-two");
+  inputName.value = profileName.textContent;
+  inputJob.value = profileJob.textContent;
   // let form = document.querySelector(".overlay__form");
   form.addEventListener("submit", submit_title_changes, true);
 }
 
-function add_button_func() {
+function openAddButtoForm() {
+  form.style.display = "flex";
   overlay.classList.add("overlay_opened");
   overlay.style.visibility = "visible";
-  overlay_container.insertAdjacentHTML(
-    "beforeend",
-    `
-<form class="overlay__form" name="form">
-  <h2 class="overlay__form-title overlay__form-width">
-    Новое место
-  </h2>
-  <input
-    class="overlay__form-input overlay__form-width"
-    type="text"
-    id="overlay__form-input_line-one"
-    name="overlay__form-input_line-one"
-    placeholder=""
-    required=""
-    autocomplete="off"
-  />
-  <input
-    class="overlay__form-input overlay__form-width"
-    type="text"
-    id="overlay__form-input_line-two"
-    name="overlay__form-input_line-two"
-    placeholder=""
-    required=""
-    autocomplete="off"
-  />
-  <input
-    class="overlay__form-button overlay__form-width"
-    type="submit"
-    name="overlay__form-button"
-    value="Создать"
-  />
-</form>
-`
-  );
-  let input_name = document.getElementById("overlay__form-input_line-one");
-  let input_job = document.getElementById("overlay__form-input_line-two");
-  input_name.setAttribute("placeholder", "Название");
-  input_job.setAttribute("placeholder", "Ссылка на картинку");
+  let inputName = document.getElementById("overlay__form-input_line-one");
+  let inputJob = document.getElementById("overlay__form-input_line-two");
+  inputName.setAttribute("placeholder", "Название");
+  inputJob.setAttribute("placeholder", "Ссылка на картинку");
   // let form = document.querySelector(".overlay__form");
   form.addEventListener("submit", submit_card_creation, true);
 }
 
-let edit_button = document.querySelector(".profile__edit-button");
-let add_button = document.querySelector(".profile__add-button");
-let close_button = document.querySelector(".overlay__close-button");
+let editButton = document.querySelector(".profile__edit-button");
+let addButton = document.querySelector(".profile__add-button");
+let closeButton = document.querySelector(".overlay__close-button");
 
-close_button.addEventListener("click", overlay_close);
-edit_button.addEventListener("click", edit_button_func);
-add_button.addEventListener("click", add_button_func);
+closeButton.addEventListener("click", closeOverlay);
+editButton.addEventListener("click", openEditButtoForm);
+addButton.addEventListener("click", openAddButtoForm);
