@@ -2,6 +2,10 @@ const overlay = document.querySelector(".overlay");
 const profileName = document.querySelector(".profile__intro-title");
 const profileJob = document.querySelector(".profile__intro-subtitle");
 const overlayContainer = document.querySelector(".overlay__container");
+const elements = document.querySelector(".elements");
+
+const inputName = document.querySelector("#overlay__form-input_line-one");
+const inputJob = document.querySelector("#overlay__form-input_line-two");
 
 const imagePopup = document.querySelector(".overlay__image-popup");
 
@@ -33,8 +37,8 @@ const initialCards = [
 ];
 
 function closeOverlay() {
-  const inputName = document.getElementById("overlay__form-input_line-one");
-  const inputJob = document.getElementById("overlay__form-input_line-two");
+  // const inputName = document.getElementById("overlay__form-input_line-one");
+  // const inputJob = document.getElementById("overlay__form-input_line-two");
   overlay.classList.remove("overlay_opened");
   setTimeout(() => {
     overlay.style.visibility = "hidden";
@@ -70,8 +74,8 @@ function expose_image(image) {
 function create_card(name, url) {
   const card = document.createElement("div");
   card.classList.add("card");
-  const card__deconste_button = document.createElement("div");
-  card__deconste_button.classList.add("card__deconste-button");
+  const card__delete_button = document.createElement("div");
+  card__delete_button.classList.add("card__delete-button");
   const card__image = document.createElement("img");
   card__image.classList.add("card__image");
   card__image.setAttribute("src", url);
@@ -87,7 +91,7 @@ function create_card(name, url) {
   card__heart.name = "card__heart";
   card__heart.value = "";
 
-  card.append(card__deconste_button, card__image, card__title_group);
+  card.append(card__delete_button, card__image, card__title_group);
   card__title_group.append(card__title);
   card__title_group.append(card__heart);
 
@@ -97,50 +101,27 @@ function create_card(name, url) {
 for (let i = 0; i < initialCards.length; i++) {
   const card = create_card(initialCards[i].name, initialCards[i].link);
 
-  let elements = document.querySelector(".elements");
   elements.prepend(card);
-  const likeButtons = document.querySelectorAll(".card__heart");
-  likeButtons.forEach(function (likeButton) {
-    likeButton.addEventListener("click", add_like);
-  });
-  const deconsteButtons = document.querySelectorAll(".card__deconste-button");
-  deconsteButtons.forEach(function (deconste_button) {
-    deconste_button.addEventListener("click", remove_card);
-  });
-  const imageButtons = document.querySelectorAll(".card__image");
-  imageButtons.forEach(function (image_button) {
-    image_button.addEventListener("click", expose_image);
-  });
+
+  const likeButton = document.querySelector(".card__heart");
+  likeButton.addEventListener("click", add_like);
+  const deleteButton = document.querySelector(".card__delete-button");
+  deleteButton.addEventListener("click", remove_card);
+  const imageButton = document.querySelector(".card__image");
+  imageButton.addEventListener("click", expose_image);
 }
 
 function submit_title_changes(submit) {
   submit.preventDefault();
-  const inputName = document.getElementById("overlay__form-input_line-one");
-  const inputJob = document.getElementById("overlay__form-input_line-two");
-  profileName.innerHTML = inputName.value;
-  profileJob.innerHTML = inputJob.value;
+  profileName.textContent = inputName.value;
+  profileJob.textContent = inputJob.value;
   closeOverlay();
 }
 
 function submit_card_creation(submit) {
   submit.preventDefault();
-  const inputName = document.getElementById("overlay__form-input_line-one");
-  const inputJob = document.getElementById("overlay__form-input_line-two");
   const card = create_card(inputName.value, inputJob.value);
-  const elements = document.querySelector(".elements");
   elements.prepend(card);
-  const likeButtons = document.querySelectorAll(".card__heart");
-  likeButtons.forEach(function (likeButton) {
-    likeButton.addEventListener("click", add_like);
-  });
-  const deconsteButtons = document.querySelectorAll(".card__deconste-button");
-  deconsteButtons.forEach(function (deconste_button) {
-    deconste_button.addEventListener("click", remove_card);
-  });
-  const imageButtons = document.querySelectorAll(".card__image");
-  imageButtons.forEach(function (image_button) {
-    image_button.addEventListener("click", expose_image);
-  });
   closeOverlay();
 }
 
@@ -148,11 +129,8 @@ function openEditButtoForm() {
   form.style.display = "flex";
   overlay.classList.add("overlay_opened");
   overlay.style.visibility = "visible";
-  const inputName = document.getElementById("overlay__form-input_line-one");
-  const inputJob = document.getElementById("overlay__form-input_line-two");
   inputName.value = profileName.textContent;
   inputJob.value = profileJob.textContent;
-  // const form = document.querySelector(".overlay__form");
   form.addEventListener("submit", submit_title_changes, true);
 }
 
@@ -160,11 +138,8 @@ function openAddButtoForm() {
   form.style.display = "flex";
   overlay.classList.add("overlay_opened");
   overlay.style.visibility = "visible";
-  const inputName = document.getElementById("overlay__form-input_line-one");
-  const inputJob = document.getElementById("overlay__form-input_line-two");
   inputName.setAttribute("placeholder", "Название");
   inputJob.setAttribute("placeholder", "Ссылка на картинку");
-  // const form = document.querySelector(".overlay__form");
   form.addEventListener("submit", submit_card_creation, true);
 }
 
