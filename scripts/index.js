@@ -12,6 +12,12 @@ const inputCardImageUrl = document.querySelector("#inputCardImageUrl");
 
 const imagePopup = document.querySelector(".overlay__image-popup");
 
+const addForm = document.querySelector("#add_form");
+const editForm = document.querySelector("#edit_form");
+
+const overlayImage = document.querySelector(".overlay__image-popup-photo");
+const overlayImageTitle = document.querySelector(".overlay__image-popup-tilte");
+
 const initialCards = [
   {
     name: "Архыз",
@@ -44,33 +50,39 @@ function closeOverlay() {
   setTimeout(() => {
     overlay.style.visibility = "hidden";
   }, 200);
-  form.style.display = "none";
+  addForm.style.display = "none";
   editForm.style.display = "none";
   imagePopup.style.display = "none";
   inputName.value = "";
   inputJob.value = "";
-  form.removeEventListener("submit", submitCardCreation, true);
-  editForm.removeEventListener("submit", submitTitleChanges, true);
 }
 
-function add_like(like_button) {
-  like_button.currentTarget.classList.toggle("card__heart_selected");
+function addLike(likeButton) {
+  likeButton.currentTarget.classList.toggle("card__heart_selected");
 }
 
 function removeCard(card) {
   card.currentTarget.closest(".card").remove();
 }
 
-function exposeImage(image) {
-  const overlayImage = document.querySelector(".overlay__image-popup-photo");
-  const overlayImageTitle = document.querySelector(
-    ".overlay__image-popup-tilte"
-  );
-  overlayImage.setAttribute("src", image.currentTarget.src);
-  overlayImageTitle.textContent = image.currentTarget.alt;
-  imagePopup.style.display = "flex";
+function openOverlay(openButton) {
   overlay.classList.add("overlay_opened");
   overlay.style.visibility = "visible";
+  if (openButton.currentTarget.classList[0] === "profile__edit-button") {
+    overlay.style.visibility = "visible";
+    inputName.value = profileName.textContent;
+    inputJob.value = profileJob.textContent;
+    editForm.style.display = "flex";
+  } else if (openButton.currentTarget.classList[0] === "profile__add-button") {
+    overlay.style.visibility = "visible";
+    addForm.style.display = "flex";
+  } else if (openButton.currentTarget.classList[0] === "card__image") {
+    overlayImage.setAttribute("src", openButton.currentTarget.src);
+    overlayImageTitle.textContent = openButton.currentTarget.alt;
+    imagePopup.style.display = "flex";
+  } else {
+    console.log("else");
+  }
 }
 
 function createCard(name, url) {
@@ -81,19 +93,20 @@ function createCard(name, url) {
   cardImage.setAttribute("alt", name);
   const cardTitle = card.querySelector(".card__title");
   cardTitle.textContent = name;
+
+  const likeButton = card.querySelector(".card__heart");
+  likeButton.addEventListener("click", addLike);
+  const deleteButton = card.querySelector(".card__delete-button");
+  deleteButton.addEventListener("click", removeCard);
+  const imageButton = card.querySelector(".card__image");
+  imageButton.addEventListener("click", openOverlay);
+
   return card;
 }
 
 for (let i = 0; i < initialCards.length; i++) {
   const card = createCard(initialCards[i].name, initialCards[i].link);
   elements.prepend(card);
-
-  const likeButton = document.querySelector(".card__heart");
-  likeButton.addEventListener("click", add_like);
-  const deleteButton = document.querySelector(".card__delete-button");
-  deleteButton.addEventListener("click", removeCard);
-  const imageButton = document.querySelector(".card__image");
-  imageButton.addEventListener("click", exposeImage);
 }
 
 function submitTitleChanges(submit) {
@@ -107,43 +120,19 @@ function submitTitleChanges(submit) {
 function submitCardCreation(submit) {
   submit.preventDefault();
   console.log(submit);
-  // const card = createCard(inputName.value, inputJob.value);
   const card = createCard(inputCardName.value, inputCardImageUrl.value);
   elements.prepend(card);
 
-  const likeButton = document.querySelector(".card__heart");
-  likeButton.addEventListener("click", add_like);
-  const deleteButton = document.querySelector(".card__delete-button");
-  deleteButton.addEventListener("click", removeCard);
-  const imageButton = document.querySelector(".card__image");
-  imageButton.addEventListener("click", exposeImage);
-
   closeOverlay();
-}
-
-function openEditButtoForm() {
-  editForm.style.display = "flex";
-  overlay.classList.add("overlay_opened");
-  overlay.style.visibility = "visible";
-  inputName.value = profileName.textContent;
-  inputJob.value = profileJob.textContent;
-  editForm.addEventListener("submit", submitTitleChanges, true);
-}
-
-function openAddButtoForm() {
-  form.style.display = "flex";
-  overlay.classList.add("overlay_opened");
-  overlay.style.visibility = "visible";
-  // inputCardName.setAttribute("placeholder", "asdasdasdasda");
-  // inputCardImageUrl.setAttribute("placeholder", "Ссылка на картинку");
-
-  form.addEventListener("submit", submitCardCreation, true);
 }
 
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const closeButton = document.querySelector(".overlay__close-button");
 
+editForm.addEventListener("submit", submitTitleChanges, true);
+addForm.addEventListener("submit", submitCardCreation, true);
+
 closeButton.addEventListener("click", closeOverlay);
-editButton.addEventListener("click", openEditButtoForm);
-addButton.addEventListener("click", openAddButtoForm);
+editButton.addEventListener("click", openOverlay);
+addButton.addEventListener("click", openOverlay);

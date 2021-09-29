@@ -50,16 +50,16 @@
           name="overlay__close-button"
           value=""
         ></button>
-        <form class="overlay__form" name="editForm">
+        <form class="overlay__form" name="editForm" id="edit_form">
           <h2 class="overlay__form-title overlay__form-width">
-            editForm
+            Редактировать профиль
           </h2>
           <input
             class="overlay__form-input overlay__form-width"
             type="text"
             id="overlay__form-input_line-one"
             name="overlay__form-input_line-one"
-            placeholder=""
+            placeholder="Имя"
             required=""
             autocomplete="off"
           />
@@ -68,7 +68,7 @@
             type="text"
             id="overlay__form-input_line-two"
             name="overlay__form-input_line-two"
-            placeholder=""
+            placeholder="О себе"
             required=""
             autocomplete="off"
           />
@@ -77,12 +77,12 @@
             type="submit"
             name="overlay__form-button"
             placeholder=""
-            value="Button"
+            value="Сохранить"
           />
         </form>
-        <form class="overlay__form" name="form">
+        <form class="overlay__form" name="form" id="add_form">
           <h2 class="overlay__form-title overlay__form-width">
-            form
+            Новое место
           </h2>
           <input
             class="overlay__form-input overlay__form-width"
@@ -106,16 +106,25 @@
             class="overlay__form-button overlay__form-width"
             type="submit"
             name="overlay__form-button"
-            value="Button"
+            value="Создать"
           />
         </form>
-
         <div class="overlay__image-popup">
           <img class="overlay__image-popup-photo" src="" />
           <div class="overlay__image-popup-tilte">
             ${image.currentTarget.alt}
           </div>
         </div>
+      </div>
+    </div>
+    <div class="overlay">
+      <div class="overlay__container">
+        <button
+          class="overlay__close-button"
+          type="button"
+          name="overlay__close-button"
+          value=""
+        ></button>
       </div>
     </div>
     <template id="card">
