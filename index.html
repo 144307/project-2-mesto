@@ -42,7 +42,7 @@
     <footer class="footer page__size">
       <p class="footer__copyright">&#169; 2020 Mesto Russia</p>
     </footer>
-    <div class="overlay">
+    <div class="overlay overlay_type_profile">
       <div class="overlay__container">
         <button
           class="overlay__close-button"
@@ -80,6 +80,16 @@
             value="Сохранить"
           />
         </form>
+      </div>
+    </div>
+    <div class="overlay overlay_type_card-add">
+      <div class="overlay__container">
+        <button
+          class="overlay__close-button"
+          type="button"
+          name="overlay__close-button"
+          value=""
+        ></button>
         <form class="overlay__form" name="form" id="add_form">
           <h2 class="overlay__form-title overlay__form-width">
             Новое место
@@ -109,15 +119,9 @@
             value="Создать"
           />
         </form>
-        <div class="overlay__image-popup">
-          <img class="overlay__image-popup-photo" src="" />
-          <div class="overlay__image-popup-tilte">
-            ${image.currentTarget.alt}
-          </div>
-        </div>
       </div>
     </div>
-    <div class="overlay">
+    <div class="overlay overlay_type_picture">
       <div class="overlay__container">
         <button
           class="overlay__close-button"
@@ -125,6 +129,12 @@
           name="overlay__close-button"
           value=""
         ></button>
+        <div class="overlay__image-popup">
+          <img class="overlay__image-popup-photo" src="" />
+          <div class="overlay__image-popup-tilte">
+            ${image.currentTarget.alt}
+          </div>
+        </div>
       </div>
     </div>
     <template id="card">
