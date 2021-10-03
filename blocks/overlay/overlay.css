@@ -3,7 +3,6 @@
   height: 100vh;
   position: fixed;
   display: flex;
-  /* display: none; */
   justify-content: center;
   align-items: center;
   top: 0;
@@ -13,4 +12,5 @@
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.2s linear;
+  /* transition: opacity 0.2s linear; */
 }

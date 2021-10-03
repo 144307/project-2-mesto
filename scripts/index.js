@@ -14,11 +14,19 @@ const inputJob = document.querySelector("#overlay__form-input_line-two");
 const inputCardName = document.querySelector("#inputCardName");
 const inputCardImageUrl = document.querySelector("#inputCardImageUrl");
 
-const addForm = document.querySelector("#add_form");
 const editForm = document.querySelector("#edit_form");
+const addForm = document.querySelector("#add_form");
 
 const overlayImage = document.querySelector(".overlay__image-popup-photo");
 const overlayImageTitle = document.querySelector(".overlay__image-popup-tilte");
+
+const profilePopupCloseButton = profilePopup.querySelector(
+  "#close_profile_button"
+);
+const newCardPopupCloseButton = newCardPopup.querySelector(
+  "#close_card-add_button"
+);
+const imagePopupCloseButton = imagePopup.querySelector("#close_picture_button");
 
 const initialCards = [
   {
@@ -47,15 +55,10 @@ const initialCards = [
   },
 ];
 
-function closeOverlay() {
-  for (let i = 0; i < overlays.length; i++) {
-    overlays[i].classList.remove("overlay_opened");
-  }
-  setTimeout(() => {
-    profilePopup.style.visibility = "hidden";
-    newCardPopup.style.visibility = "hidden";
-    imagePopup.style.visibility = "hidden";
-  }, 200);
+function closeOverlay(overlayToClose) {
+  overlayToClose.currentTarget
+    .closest(".overlay")
+    .classList.remove("overlay_opened");
 }
 
 function addLike(likeButton) {
@@ -66,37 +69,34 @@ function removeCard(card) {
   card.currentTarget.closest(".card").remove();
 }
 
-function openProfilePopup() {
-  profilePopup.classList.add("overlay_opened");
-  profilePopup.style.visibility = "visible";
-  inputName.value = profileName.textContent;
-  inputJob.value = profileJob.textContent;
+// function openOverlay(openButton) {
+//   if (openButton.currentTarget.classList[0] === "profile__edit-button") {
+//     openProfilePopup();
+//   } else if (openButton.currentTarget.classList[0] === "card__image") {
+//     openImagePopup(openButton);
+//   } else {
+//     console.log("else");
+//   }
+// }
+
+function openOverlay(overlayToOpen) {
+  overlayToOpen.classList.add("overlay_opened");
 }
 
-function openNewCardPopup() {
-  newCardPopup.classList.add("overlay_opened");
-  newCardPopup.style.visibility = "visible";
+function openProfilePopup(profilePopup) {
+  inputName.value = profileName.textContent;
+  inputJob.value = profileJob.textContent;
+  openOverlay(profilePopup);
+}
+
+function openNewCardPopup(newCardPopup) {
+  openOverlay(newCardPopup);
 }
 
 function openImagePopup(openButton) {
-  imagePopup.classList.add("overlay_opened");
-  imagePopup.style.visibility = "visible";
   overlayImage.setAttribute("src", openButton.currentTarget.src);
   overlayImageTitle.textContent = openButton.currentTarget.alt;
-}
-
-function openOverlay(openButton) {
-  inputName.value = "";
-  inputJob.value = "";
-  if (openButton.currentTarget.classList[0] === "profile__edit-button") {
-    openProfilePopup();
-  } else if (openButton.currentTarget.classList[0] === "profile__add-button") {
-    openNewCardPopup();
-  } else if (openButton.currentTarget.classList[0] === "card__image") {
-    openImagePopup(openButton);
-  } else {
-    console.log("else");
-  }
+  openOverlay(imagePopup);
 }
 
 function createCard(name, url) {
@@ -112,8 +112,8 @@ function createCard(name, url) {
   const deleteButton = card.querySelector(".card__delete-button");
   deleteButton.addEventListener("click", removeCard);
   const imageButton = card.querySelector(".card__image");
-  imageButton.addEventListener("click", openOverlay);
-
+  // imageButton.addEventListener("click", openOverlay);
+  imageButton.addEventListener("click", openImagePopup);
   return card;
 }
 
@@ -126,27 +126,36 @@ function submitTitleChanges(submit) {
   submit.preventDefault();
   profileName.textContent = inputName.value;
   profileJob.textContent = inputJob.value;
-  closeOverlay();
+  closeOverlay(submit);
 }
 
 function submitCardCreation(submit) {
   submit.preventDefault();
-  console.log(submit);
   const card = createCard(inputCardName.value, inputCardImageUrl.value);
   elements.prepend(card);
-  closeOverlay();
+  closeOverlay(submit);
+  inputName.value = "";
+  inputJob.value = "";
 }
 
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 
-const closeButtons = document.querySelectorAll(".overlay__close-button");
-for (let i = 0; i < closeButtons.length; i++) {
-  closeButtons[i].addEventListener("click", closeOverlay);
-}
+// const closeButtons = document.querySelectorAll(".overlay__close-button");
+// for (let i = 0; i < closeButtons.length; i++) {
+//   closeButtons[i].addEventListener("click", closeOverlay);
+// }
+
+profilePopupCloseButton.addEventListener("click", closeOverlay);
+newCardPopupCloseButton.addEventListener("click", closeOverlay);
+imagePopupCloseButton.addEventListener("click", closeOverlay);
 
 editForm.addEventListener("submit", submitTitleChanges, true);
 addForm.addEventListener("submit", submitCardCreation, true);
 
-editButton.addEventListener("click", openOverlay);
-addButton.addEventListener("click", openOverlay);
+editButton.addEventListener("click", function () {
+  openProfilePopup(newCardPopup);
+});
+addButton.addEventListener("click", function () {
+  openNewCardPopup(newCardPopup);
+});
