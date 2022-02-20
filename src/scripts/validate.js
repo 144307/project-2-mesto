@@ -14,9 +14,9 @@ function hideInputError(inputField, inputErrorClass) {
 }
 
 function checkInput(inputField, inputErrorClass) {
-  let isValid = inputField.checkValidity();
+  const isValid = inputField.checkValidity();
 
-  let errorMessage = inputField
+  const errorMessage = inputField
     .closest(".input-group")
     .querySelector(inputField.inputSubtitleErrorClass);
   errorMessage.textContent = inputField.validationMessage;
@@ -39,7 +39,7 @@ function checkForm(
   for (let i = 0; i < inputFields.length; i++) {
     const inputField = inputFields[i];
     inputField.inputSubtitleErrorClass = inputSubtitleErrorClass;
-    let isValid = inputField.checkValidity();
+    const isValid = inputField.checkValidity();
 
     const submitButton = inputField
       .closest(formSelector)

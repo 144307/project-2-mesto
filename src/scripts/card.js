@@ -1,4 +1,5 @@
-import { openImagePopup } from "./modal.js";
+import { openOverlay } from "./modal.js";
+// import { openImagePopup } from "./modal.js";
 import { testModal } from "./modal.js";
 
 testModal();
@@ -9,6 +10,16 @@ function addLike(likeButton) {
 
 function removeCard(card) {
   card.currentTarget.closest(".card").remove();
+}
+
+const overlayImage = document.querySelector(".overlay__image-popup-photo");
+const overlayImageTitle = document.querySelector(".overlay__image-popup-tilte");
+
+function openImagePopup(openButton) {
+  overlayImage.setAttribute("src", openButton.currentTarget.src);
+  overlayImage.setAttribute("alt", openButton.currentTarget.alt);
+  overlayImageTitle.textContent = openButton.currentTarget.alt;
+  openOverlay(imagePopup);
 }
 
 export function createCard(name, url) {
