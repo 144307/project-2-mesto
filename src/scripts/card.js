@@ -4,6 +4,8 @@ import { testModal } from "./modal.js";
 
 testModal();
 
+const imagePopup = document.querySelector(".overlay_type_picture");
+
 function addLike(likeButton) {
   likeButton.currentTarget.classList.toggle("card__heart_selected");
 }
