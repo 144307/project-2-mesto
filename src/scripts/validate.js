@@ -13,9 +13,8 @@ function hideInputError(inputField, inputErrorClass) {
   inputField.classList.remove(inputErrorClass);
 }
 
-function checkInput(event, inputErrorClass) {
-  let inputField = event.currentTarget;
-  var isValid = inputField.checkValidity();
+function checkInput(inputField, inputErrorClass) {
+  let isValid = inputField.checkValidity();
 
   let errorMessage = inputField
     .closest(".input-group")
@@ -30,19 +29,19 @@ function checkInput(event, inputErrorClass) {
 }
 
 function checkForm(
-  event,
+  form,
   inputSubtitleErrorClass,
   inputSelector,
   formSelector,
   submitsubmitButton
 ) {
-  let inputFields = event.currentTarget.querySelectorAll(inputSelector);
+  const inputFields = Array.from(form.querySelectorAll(inputSelector));
   for (let i = 0; i < inputFields.length; i++) {
-    let inputField = inputFields[i];
+    const inputField = inputFields[i];
     inputField.inputSubtitleErrorClass = inputSubtitleErrorClass;
-    var isValid = inputField.checkValidity();
+    let isValid = inputField.checkValidity();
 
-    let submitButton = inputField
+    const submitButton = inputField
       .closest(formSelector)
       .querySelector(submitsubmitButton);
 
@@ -55,10 +54,6 @@ function checkForm(
   }
 }
 
-export function testFunction() {
-  console.log("validate.js works");
-}
-
 export function enableValidation(
   formSelector,
   inputSelector,
@@ -66,13 +61,11 @@ export function enableValidation(
   inputSubtitleErrorClass,
   inputErrorClass
 ) {
-  // console.log("TEST =", this);
-  // this.myFunction.bind(this);
-  let forms = document.querySelectorAll(formSelector);
+  const forms = Array.from(document.querySelectorAll(formSelector));
   for (let i = 0; i < forms.length; i++) {
     forms[i].addEventListener("input", (event) => {
       checkForm(
-        event,
+        forms[i],
         inputSubtitleErrorClass,
         inputSelector,
         formSelector,
@@ -80,24 +73,12 @@ export function enableValidation(
       );
     });
 
-    let inputs = forms[i].querySelectorAll(inputSelector);
+    const inputs = Array.from(forms[i].querySelectorAll(inputSelector));
     for (let j = 0; j < inputs.length; j++) {
-      // inputs[j].style.color = "purple";
-      // inputs[j].addEventListener("input", checkInput);
-      inputs[j].addEventListener("input", (event) => {
-        checkInput(event, inputErrorClass);
+      inputs[j].addEventListener("input", () => {
+        checkInput(inputs[j], inputErrorClass);
       });
       inputs[j].inputSubtitleErrorClass = inputSubtitleErrorClass;
     }
   }
 }
-
-// export { enableValidation as enableValidation };
-
-// enableValidation(
-//   (formSelector = ".overlay__form"),
-//   (inputSelector = ".overlay__form-input"),
-//   (submitsubmitButton = ".overlay__form-button"),
-//   (inputSubtitleErrorClass = ".overlay__form-error"),
-//   (inputErrorClass = "overlay__form-input_error")
-// );

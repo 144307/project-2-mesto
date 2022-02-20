@@ -9,7 +9,11 @@
 
   <body class="page">
     <header class="header">
-      <img class="header__logo" src="./images/Vector.svg" alt="логотип" />
+      <img
+        class="header__logo"
+        src="<%=require('./images/Vector.svg')%>"
+        alt="логотип"
+      />
     </header>
     <main>
       <section class="profile page__size">
@@ -125,9 +129,7 @@
             <div
               class="overlay__form-new-card-name-input-error overlay__form-error overlay__form-width"
               id="CardNameErrorMessage"
-            >
-              <!-- CardNameErrorMessage -->
-            </div>
+            ></div>
           </div>
           <div class="input-group">
             <input
@@ -186,7 +188,7 @@
         </div>
       </div>
     </template>
-    <script src="./index.js" type="module"></script>
+    <!-- <script src="./index.js" type="module"></script> -->
     <!-- <script src="./scripts/index.js" type="module"></script> -->
     <!-- <script src="./scripts/validate.js" type="module"></script> -->
   </body>
