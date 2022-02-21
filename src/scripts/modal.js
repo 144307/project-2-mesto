@@ -5,6 +5,7 @@ export function testModal(argument = "") {
 testModal("2 ");
 
 function clearOverlay(overlay) {
+  console.log(overlay);
   const errors = overlay.querySelectorAll(".overlay__form-error");
   for (let i = 0; i < errors.length; i++) {
     errors[i].textContent = "";
@@ -17,7 +18,7 @@ function clearOverlay(overlay) {
   }
 }
 
-export function closeFormOverlay(overlay) {
+export function openFormOverlay(overlay) {
   overlay.querySelector(".overlay__form-button").disabled = true;
   const inputs = overlay.querySelectorAll(".overlay__form-input");
   for (let i = 0; i < inputs.length; i++) {
@@ -26,14 +27,15 @@ export function closeFormOverlay(overlay) {
   clearOverlay(overlay);
 }
 
-export function closeOverlay(overlayToClose) {
-  overlayToClose.classList.remove("overlay_opened");
+export function closeOverlay() {
+  const overlay = document.querySelector(".overlay_opened");
+  overlay.classList.remove("overlay_opened");
+  document.removeEventListener("keydown", handleEsc);
 }
 
 function handleEsc(event) {
   if (event.key === "Escape") {
-    let overlay = document.querySelector(".overlay_opened");
-    closeOverlay(overlay);
+    closeOverlay();
   }
 }
 
@@ -46,10 +48,7 @@ const overlays = document.querySelectorAll(".overlay");
 overlays.forEach((overlay) => {
   overlay.addEventListener("click", (event) => {
     if (event.target === overlay) {
-      closeOverlay(overlay);
-      if (!overlay.classList.contains("overlay_type_picture")) {
-        closeFormOverlay(overlay);
-      }
+      closeOverlay();
     }
   });
 });

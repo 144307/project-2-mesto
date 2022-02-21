@@ -2,7 +2,7 @@ import { enableValidation } from "./scripts/validate.js";
 
 import { createCard } from "./scripts/card.js";
 
-import { closeFormOverlay } from "./scripts/modal.js";
+import { openFormOverlay } from "./scripts/modal.js";
 import { closeOverlay } from "./scripts/modal.js";
 import { openOverlay } from "./scripts/modal.js";
 
@@ -67,15 +67,13 @@ const inputCardImageUrl = document.querySelector(
 );
 
 profilePopupCloseButton.addEventListener("click", (event) => {
-  closeOverlay(event.currentTarget.closest(".overlay"));
-  closeFormOverlay(event.currentTarget.closest(".overlay"));
+  closeOverlay();
 });
 newCardPopupCloseButton.addEventListener("click", (event) => {
-  closeOverlay(event.currentTarget.closest(".overlay"));
-  closeFormOverlay(event.currentTarget.closest(".overlay"));
+  closeOverlay();
 });
 imagePopupCloseButton.addEventListener("click", (event) => {
-  closeOverlay(event.currentTarget.closest(".overlay"));
+  closeOverlay();
 });
 
 const editProfileForm = document.querySelector("#edit_form");
@@ -84,10 +82,12 @@ const addForm = document.querySelector("#add_form");
 export function openProfilePopup(profilePopup) {
   inputName.value = profileName.textContent;
   inputJob.value = profileJob.textContent;
+  openFormOverlay(profilePopup);
   openOverlay(profilePopup);
 }
 
 export function openNewCardPopup(newCardPopup) {
+  openFormOverlay(newCardPopup);
   openOverlay(newCardPopup);
 }
 
@@ -95,16 +95,14 @@ function submitTitleChanges(event) {
   event.preventDefault();
   profileName.textContent = inputName.value;
   profileJob.textContent = inputJob.value;
-  closeOverlay(event.currentTarget.closest(".overlay"));
-  closeFormOverlay(event.currentTarget.closest(".overlay"));
+  closeOverlay();
 }
 
 function submitCardCreation(event) {
   event.preventDefault();
   const card = createCard(inputCardName.value, inputCardImageUrl.value);
   elements.prepend(card);
-  closeOverlay(event.currentTarget.closest(".overlay"));
-  closeFormOverlay(event.currentTarget.closest(".overlay"));
+  closeOverlay();
 }
 
 editProfileForm.addEventListener("submit", submitTitleChanges, true);
