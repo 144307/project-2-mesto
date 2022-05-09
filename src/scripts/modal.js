@@ -1,8 +1,8 @@
-export function testModal(argument = "") {
-  argument += "Modal.js works";
-  console.log(argument);
-}
-testModal("2 ");
+// export function testModal(argument = "") {
+//   argument += "Modal.js works";
+//   console.log(argument);
+// }
+// testModal("2 ");
 
 function clearOverlay(overlay) {
   console.log(overlay);
