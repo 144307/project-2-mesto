@@ -18,6 +18,11 @@ function clearOverlay(overlay) {
   }
 }
 
+export function toggleLoadingButton(submitButton, newValue) {
+  // let submitButton = overlay.querySelector(".overlay__form-button");
+  submitButton.value = newValue;
+}
+
 export function openFormOverlay(overlay) {
   overlay.querySelector(".overlay__form-button").disabled = true;
   const inputs = overlay.querySelectorAll(".overlay__form-input");

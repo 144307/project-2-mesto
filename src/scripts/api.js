@@ -170,6 +170,26 @@ export function removeLike(cardId) {
 //   });
 // }
 
-export function updateAvatar() {
+export function updateAvatar(avatarUrl) {
   // PATCH https://nomoreparties.co/v1/cohortId/users/me/avatar
+  console.log("updateAvatar");
+  // console.log("avatarUrl =", avatarUrl);
+  // avatarUrl =
+  //   "https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg";
+  return fetch("https://nomoreparties.co/v1/plus-cohort-6/users/me/avatar", {
+    method: "PATCH",
+    headers: {
+      authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      avatar: avatarUrl,
+    }),
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    console.log("res =", res);
+    return Promise.reject("Ошибка");
+  });
 }

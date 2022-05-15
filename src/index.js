@@ -5,11 +5,13 @@ import { createCard } from "./scripts/card.js";
 import { openFormOverlay } from "./scripts/modal.js";
 import { closeOverlay } from "./scripts/modal.js";
 import { openOverlay } from "./scripts/modal.js";
+import { toggleLoadingButton } from "./scripts/modal.js";
 
 import { getCards } from "./scripts/api.js";
 import { getCardsAndInfo } from "./scripts/api.js";
 import { changeProfile } from "./scripts/api.js";
 import { addCard } from "./scripts/api.js";
+import { updateAvatar } from "./scripts/api.js";
 
 import "./pages/index.css";
 
@@ -18,6 +20,7 @@ let owner;
 const profilePopup = document.querySelector(".overlay_type_profile");
 const newCardPopup = document.querySelector(".overlay_type_card-add");
 const imagePopup = document.querySelector(".overlay_type_picture");
+const avatarEditPopup = document.querySelector(".overlay_type_avatar-edit");
 
 const profileAvatar = document.querySelector(".profile__avatar");
 const profileName = document.querySelector(".profile__intro-title");
@@ -34,6 +37,9 @@ const newCardPopupCloseButton = newCardPopup.querySelector(
   "#close_card-add_button"
 );
 const imagePopupCloseButton = imagePopup.querySelector("#close_picture_button");
+const avatarEditPopupCloseButton = avatarEditPopup.querySelector(
+  "#close_avatar-edit_button"
+);
 
 // getCards().then((result) => {
 //   // console.log("result =", result);
@@ -88,6 +94,9 @@ const inputCardName = document.querySelector(
 const inputCardImageUrl = document.querySelector(
   "#overlay__form-new-card-url-input"
 );
+const inputProfileImage = document.querySelector(
+  "#overlay__form-new-profile-image-input"
+);
 
 profilePopupCloseButton.addEventListener("click", () => {
   closeOverlay();
@@ -98,33 +107,51 @@ newCardPopupCloseButton.addEventListener("click", () => {
 imagePopupCloseButton.addEventListener("click", () => {
   closeOverlay();
 });
+avatarEditPopupCloseButton.addEventListener("click", () => {
+  closeOverlay();
+});
 
 const editProfileForm = document.querySelector("#edit_form");
 const addForm = document.querySelector("#add_form");
+const avatarEditForm = document.querySelector("#avatar_edit_form");
 
-export function openProfilePopup(profilePopup) {
+function openProfilePopup(profilePopup) {
   openFormOverlay(profilePopup);
   inputName.value = profileName.textContent;
   inputJob.value = profileInfo.textContent;
   openOverlay(profilePopup);
 }
 
-export function openNewCardPopup(newCardPopup) {
+function openNewCardPopup(newCardPopup) {
   openFormOverlay(newCardPopup);
   openOverlay(newCardPopup);
+}
+
+function openAvatarEditPopup(avatarEditPopup) {
+  openFormOverlay(avatarEditPopup);
+  openOverlay(avatarEditPopup);
 }
 
 function submitTitleChanges(event) {
   event.preventDefault();
   profileName.textContent = inputName.value;
   profileInfo.textContent = inputJob.value;
-  changeProfile(profileName.textContent, profileInfo.textContent);
-  closeOverlay();
+  let submitButton = event.submitter;
+  toggleLoadingButton(submitButton, "Сохранение...");
+  changeProfile(profileName.textContent, profileInfo.textContent).then(
+    (response) => {
+      closeOverlay();
+      toggleLoadingButton(submitButton, "Сохранить");
+    }
+  );
+  // closeOverlay();
 }
 
 function submitCardCreation(event) {
   event.preventDefault();
   let newCardId;
+  let submitButton = event.submitter;
+  toggleLoadingButton(submitButton, "Создание...");
   addCard(inputCardName.value, inputCardImageUrl.value).then((response) => {
     newCardId = response._id;
     console.log("added card id =", response._id);
@@ -138,20 +165,55 @@ function submitCardCreation(event) {
     );
     elements.prepend(card);
     closeOverlay();
+    // toggleLoadingButton(submitButton, "Создать");
+  });
+}
+
+// function submitCardCreation(event) {
+//   event.preventDefault();
+//   let newCardId;
+//   addCard(inputCardName.value, inputCardImageUrl.value).then((response) => {
+//     newCardId = response._id;
+//     console.log("added card id =", response._id);
+//     console.log("TEST =", newCardId);
+//     const card = createCard(
+//       inputCardName.value,
+//       inputCardImageUrl.value,
+//       0,
+//       true,
+//       newCardId
+//     );
+//     elements.prepend(card);
+//     closeOverlay();
+//   });
+// }
+
+function submitUpdateAvatar(event) {
+  event.preventDefault();
+  let submitButton = event.submitter;
+  toggleLoadingButton(submitButton, "Сохранение...");
+  updateAvatar(inputProfileImage.value).then((response) => {
+    closeOverlay();
+    toggleLoadingButton(submitButton, "Сохранить");
   });
 }
 
 editProfileForm.addEventListener("submit", submitTitleChanges, true);
 addForm.addEventListener("submit", submitCardCreation, true);
+avatarEditForm.addEventListener("submit", submitUpdateAvatar, true);
 
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
+const editAvatarButton = document.querySelector(".profile__avatar-overlay");
 
 editButton.addEventListener("click", function () {
   openProfilePopup(profilePopup);
 });
 addButton.addEventListener("click", function () {
   openNewCardPopup(newCardPopup);
+});
+editAvatarButton.addEventListener("click", function () {
+  openAvatarEditPopup(avatarEditPopup);
 });
 
 enableValidation(
