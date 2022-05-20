@@ -1,10 +1,12 @@
+// npm run build; npm run dev
+
 import { enableValidation } from "./scripts/validate.js";
 
 import { createCard } from "./scripts/card.js";
 
 import { openFormOverlay } from "./scripts/modal.js";
-import { closeOverlay } from "./scripts/modal.js";
-import { openOverlay } from "./scripts/modal.js";
+import { closePopup } from "./scripts/modal.js";
+import { openPopup } from "./scripts/modal.js";
 import { toggleLoadingButton } from "./scripts/modal.js";
 
 import { getCards } from "./scripts/api.js";
@@ -41,52 +43,41 @@ const avatarEditPopupCloseButton = avatarEditPopup.querySelector(
   "#close_avatar-edit_button"
 );
 
-// getCards().then((result) => {
-//   // console.log("result =", result);
-//   for (let i = 0; i < result.length; i++) {
-//     // console.log("card owner =", result[i].owner);
-//     let likes = result[i].likes.length;
-//     let owned = false;
-//     console.log(owner, " ", result[i].name);
-//     if (owner === result[i].name) {
-//       owned = true;
-//     }
-//     const card = createCard(result[i].name, result[i].link, likes, owned);
-//     elements.prepend(card);
-//   }
-// });
+getCardsAndInfo()
+  .then((response) => {
+    // owner = response[1].name;
+    owner = response[1]._id;
 
-getCardsAndInfo().then((response) => {
-  // owner = response[1].name;
-  owner = response[1]._id;
-
-  for (let i = 0; i < response[0].length; i++) {
-    // console.log("card owner =", result[i].owner);
-    // let likes = response[0][i].likes.length;
-    let owned = false;
-    // let id = response[0][i]._id;
-    // console.log("CardId (?) =", id);
-    // console.log(owner, " ", response[0][i].owner.name);
-    if (owner === response[0][i].owner._id) {
-      owned = true;
+    for (let i = 0; i < response[0].length; i++) {
+      // console.log("card owner =", result[i].owner);
+      // let likes = response[0][i].likes.length;
+      let owned = false;
+      // let id = response[0][i]._id;
+      // console.log("CardId (?) =", id);
+      // console.log(owner, " ", response[0][i].owner.name);
+      if (owner === response[0][i].owner._id) {
+        owned = true;
+      }
+      const card = createCard(
+        response[0][i].name,
+        response[0][i].link,
+        response[0][i].likes,
+        owned,
+        response[0][i]._id,
+        owner
+      );
+      elements.prepend(card);
     }
-    const card = createCard(
-      response[0][i].name,
-      response[0][i].link,
-      response[0][i].likes,
-      owned,
-      response[0][i]._id,
-      owner
-    );
-    elements.prepend(card);
-  }
-  console.log("cardsData =", response[0]);
+    console.log("cardsData =", response[0]);
 
-  profileName.textContent = response[1].name;
-  profileInfo.textContent = response[1].about;
-  // console.log("owner =", owner);
-  profileAvatar.setAttribute("src", response[1].avatar);
-});
+    profileName.textContent = response[1].name;
+    profileInfo.textContent = response[1].about;
+    // console.log("owner =", owner);
+    profileAvatar.setAttribute("src", response[1].avatar);
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
 
 const inputCardName = document.querySelector(
   "#overlay__form-new-card-name-input"
@@ -99,16 +90,16 @@ const inputProfileImage = document.querySelector(
 );
 
 profilePopupCloseButton.addEventListener("click", () => {
-  closeOverlay();
+  closePopup();
 });
 newCardPopupCloseButton.addEventListener("click", () => {
-  closeOverlay();
+  closePopup();
 });
 imagePopupCloseButton.addEventListener("click", () => {
-  closeOverlay();
+  closePopup();
 });
 avatarEditPopupCloseButton.addEventListener("click", () => {
-  closeOverlay();
+  closePopup();
 });
 
 const editProfileForm = document.querySelector("#edit_form");
@@ -119,83 +110,74 @@ function openProfilePopup(profilePopup) {
   openFormOverlay(profilePopup);
   inputName.value = profileName.textContent;
   inputJob.value = profileInfo.textContent;
-  openOverlay(profilePopup);
+  openPopup(profilePopup);
 }
 
 function openNewCardPopup(newCardPopup) {
   openFormOverlay(newCardPopup);
-  openOverlay(newCardPopup);
+  openPopup(newCardPopup);
 }
 
 function openAvatarEditPopup(avatarEditPopup) {
   openFormOverlay(avatarEditPopup);
-  openOverlay(avatarEditPopup);
+  openPopup(avatarEditPopup);
 }
 
 function submitTitleChanges(event) {
   event.preventDefault();
-  profileName.textContent = inputName.value;
-  profileInfo.textContent = inputJob.value;
-  let submitButton = event.submitter;
+  const submitButton = event.submitter;
   toggleLoadingButton(submitButton, "Сохранение...");
-  changeProfile(profileName.textContent, profileInfo.textContent).then(
-    (response) => {
-      closeOverlay();
+  changeProfile(profileName.textContent, profileInfo.textContent)
+    .then((response) => {
+      profileName.textContent = inputName.value;
+      profileInfo.textContent = inputJob.value;
+      closePopup();
       toggleLoadingButton(submitButton, "Сохранить");
-    }
-  );
-  // closeOverlay();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  // closePopup();
 }
 
 function submitCardCreation(event) {
   event.preventDefault();
-  let newCardId;
-  let submitButton = event.submitter;
+  const submitButton = event.submitter;
   toggleLoadingButton(submitButton, "Создание...");
-  addCard(inputCardName.value, inputCardImageUrl.value).then((response) => {
-    newCardId = response._id;
-    console.log("added card id =", response._id);
-    console.log("TEST =", newCardId);
-    const card = createCard(
-      inputCardName.value,
-      inputCardImageUrl.value,
-      0,
-      true,
-      newCardId
-    );
-    elements.prepend(card);
-    closeOverlay();
-    // toggleLoadingButton(submitButton, "Создать");
-  });
+  addCard(inputCardName.value, inputCardImageUrl.value)
+    .then((response) => {
+      const newCardId = response._id;
+      console.log("added card id =", response._id);
+      console.log("TEST =", newCardId);
+      const card = createCard(
+        inputCardName.value,
+        inputCardImageUrl.value,
+        0,
+        true,
+        newCardId
+      );
+      elements.prepend(card);
+      closePopup();
+      // toggleLoadingButton(submitButton, "Создать");
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
-
-// function submitCardCreation(event) {
-//   event.preventDefault();
-//   let newCardId;
-//   addCard(inputCardName.value, inputCardImageUrl.value).then((response) => {
-//     newCardId = response._id;
-//     console.log("added card id =", response._id);
-//     console.log("TEST =", newCardId);
-//     const card = createCard(
-//       inputCardName.value,
-//       inputCardImageUrl.value,
-//       0,
-//       true,
-//       newCardId
-//     );
-//     elements.prepend(card);
-//     closeOverlay();
-//   });
-// }
 
 function submitUpdateAvatar(event) {
   event.preventDefault();
-  let submitButton = event.submitter;
+  const submitButton = event.submitter;
   toggleLoadingButton(submitButton, "Сохранение...");
-  updateAvatar(inputProfileImage.value).then((response) => {
-    closeOverlay();
-    toggleLoadingButton(submitButton, "Сохранить");
-  });
+  updateAvatar(inputProfileImage.value)
+    .then((response) => {
+      closePopup();
+      toggleLoadingButton(submitButton, "Сохранить");
+      profileAvatar.setAttribute("src", inputProfileImage.value);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 editProfileForm.addEventListener("submit", submitTitleChanges, true);

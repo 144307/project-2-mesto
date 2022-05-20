@@ -1,20 +1,16 @@
-export function getCards() {
-  return fetch("https://nomoreparties.co/v1/plus-cohort-6/cards", {
-    // return fetch("https://nomoreparties.co/v1/plus-cohort-6/users/me", {
-    method: "GET",
-    headers: {
-      authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
-    },
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject("Ошибка");
-  });
-  // .then((result) => {
-  //   console.log("result =", result);
-  //   return result;
-  // });
+const config = {
+  baseUrl: "https://nomoreparties.co/v1/plus-cohort-6/",
+  headers: {
+    authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
+    "Content-Type": "application/json",
+  },
+};
+
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка ${res.status}`);
 }
 
 export function getCardsAndInfo() {
@@ -25,24 +21,14 @@ export function getCardsAndInfo() {
       headers: {
         authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
       },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Ошибка");
-    }),
+    }).then(checkResponse),
     fetch("https://nomoreparties.co/v1/plus-cohort-6/users/me", {
       // fetch("https://nomoreparties.co/v1/plus-cohort-6/cards", {
       method: "GET",
       headers: {
         authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
       },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Ошибка");
-    }),
+    }).then(checkResponse),
   ]);
   // .then((response) => {
   //   console.log("cardsData =", response[0]);
@@ -67,13 +53,7 @@ export function changeProfile(newName, newAbout) {
       // about: "Physicist and Chemist",
       about: newAbout,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return Promise.reject("Ошибка");
-  });
+  }).then(checkResponse);
 }
 
 export function addCard(name, link) {
@@ -93,12 +73,7 @@ export function addCard(name, link) {
       name: name,
       link: link,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject("Ошибка");
-  });
+  }).then(checkResponse);
 }
 
 export function deleteCard(cardId) {
@@ -108,12 +83,7 @@ export function deleteCard(cardId) {
     headers: {
       authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
     },
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject("Ошибка", res);
-  });
+  }).then(checkResponse);
 }
 
 export function giveLike(cardId) {
@@ -126,12 +96,7 @@ export function giveLike(cardId) {
         authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
       },
     }
-  ).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject("Ошибка", res);
-  });
+  ).then(checkResponse);
 }
 
 export function removeLike(cardId) {
@@ -144,16 +109,7 @@ export function removeLike(cardId) {
         authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
       },
     }
-  )
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Ошибка", res);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  ).then(checkResponse);
 }
 
 // export function testDeleting(cardId) {
@@ -185,11 +141,5 @@ export function updateAvatar(avatarUrl) {
     body: JSON.stringify({
       avatar: avatarUrl,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    console.log("res =", res);
-    return Promise.reject("Ошибка");
-  });
+  }).then(checkResponse);
 }

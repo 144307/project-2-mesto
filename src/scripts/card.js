@@ -1,4 +1,4 @@
-import { openOverlay } from "./modal.js";
+import { openPopup } from "./modal.js";
 // import { openImagePopup } from "./modal.js";
 // import { testModal } from "./modal.js";
 
@@ -18,46 +18,31 @@ function turnOffLike(likeButton) {
 }
 
 function toggleLike(likeButton, cardId, likes, counter) {
-  // const myPromise = new Promise(() => {
-  //   if (!likeButton.currentTarget.classList.contains("card__heart_selected")) {
-  //     giveLike(cardId).then((response) => {
-  //       likes = response.likes.length;
-  //       console.log("likes =", likes);
-  //     });
-  //     turnOnLike(likeButton.currentTarget);
-  //     // likeButton.currentTarget.classList.add("card__heart_selected");
-  //     // return likes;
-  //   } else {
-  //     removeLike(cardId).then((response) => {
-  //       likes = response.likes.length;
-  //       console.log("likes =", likes);
-  //     });
-  //     turnOffLike(likeButton.currentTarget);
-  //     // likeButton.currentTarget.classList.remove("card__heart_selected");
-  //     // return likes;
-  //   }
-  // });
-  // return myPromise;
-
   if (!likeButton.currentTarget.classList.contains("card__heart_selected")) {
-    giveLike(cardId).then((response) => {
-      console.log("test =", response);
-      likes = response.likes.length;
-      counter.textContent = likes;
-      console.log("likes =", likes);
-    });
-    turnOnLike(likeButton.currentTarget);
+    giveLike(cardId)
+      .then((response) => {
+        turnOnLike(likeButton.target);
+        likes = response.likes.length;
+        counter.textContent = likes;
+        console.log("likes =", likes);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
     // likeButton.currentTarget.classList.add("card__heart_selected");
     return likes;
   } else {
-    removeLike(cardId).then((response) => {
-      console.log("test =", response);
-      likes = response.likes.length;
-      counter.textContent = likes;
-      console.log("likes =", likes);
-    });
-    turnOffLike(likeButton.currentTarget);
-    // likeButton.currentTarget.classList.remove("card__heart_selected");
+    removeLike(cardId)
+      .then((response) => {
+        turnOffLike(likeButton.target);
+        likes = response.likes.length;
+        counter.textContent = likes;
+        console.log("likes =", likes);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    // likeButton.currentf.classList.remove("card__heart_selected");
     return likes;
   }
 }
@@ -67,10 +52,17 @@ function removeCard(card, cardId) {
   // testDeleting(cardId).then((response) => {
   //   console.log("testDeleting response =", response);
   // });
-  card.currentTarget.closest(".card").remove();
-  deleteCard(cardId).then((response) => {
-    console.log("testDeleting response =", response);
-  });
+
+  console.log("card =", card);
+  deleteCard(cardId)
+    .then((response) => {
+      card.target.closest(".card").remove();
+      console.log("testDeleting response =", response);
+      console.log("card =", card);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
   console.log(card);
 }
 
@@ -81,7 +73,7 @@ function openImagePopup(openButton) {
   overlayImage.setAttribute("src", openButton.currentTarget.src);
   overlayImage.setAttribute("alt", openButton.currentTarget.alt);
   overlayImageTitle.textContent = openButton.currentTarget.alt;
-  openOverlay(imagePopup);
+  openPopup(imagePopup);
 }
 
 export function createCard(name, url, likes, owned, cardId, ownerId) {
@@ -94,30 +86,19 @@ export function createCard(name, url, likes, owned, cardId, ownerId) {
   const cardTitle = card.querySelector(".card__title");
   cardTitle.textContent = name;
   const likeButton = card.querySelector(".card__heart");
-  let counter = card.querySelector(".card__heart-counter");
+  const counter = card.querySelector(".card__heart-counter");
   for (let i = 0; i < likes.length; i++) {
     console.log(likes[i]._id);
     console.log(ownerId);
     if (likes[i]._id.localeCompare(ownerId) === 0) {
-      console.log("TEST");
-      console.log("likeButton =", likeButton);
       turnOnLike(card.querySelector(".card__heart"));
     }
   }
   counter.textContent = likes.length;
   likeButton.addEventListener("click", (event) => {
-    console.log("new test =", toggleLike(event, cardId, likes.length, counter));
-    // toggleLike(event, cardId, likes.length)
-    //   .then((res) => {
-    //     console.log("NEW RES =", res);
-    //     counter.textContent = res;
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    toggleLike(event, cardId, likes.length, counter);
   });
   if (owned) {
-    console.log(card.querySelector(".card__delete-button"));
     const deleteButton = card.querySelector(".card__delete-button");
     deleteButton.addEventListener("click", (event) => {
       removeCard(event, cardId);
