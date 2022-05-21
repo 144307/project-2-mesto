@@ -132,10 +132,12 @@ function submitTitleChanges(event) {
       profileName.textContent = inputName.value;
       profileInfo.textContent = inputJob.value;
       closePopup();
-      toggleLoadingButton(submitButton, "Сохранить");
     })
     .catch((error) => {
       console.error("Error:", error);
+    })
+    .finally(() => {
+      toggleLoadingButton(submitButton, "Сохранить");
     });
   // closePopup();
 }
@@ -158,10 +160,12 @@ function submitCardCreation(event) {
       );
       elements.prepend(card);
       closePopup();
-      // toggleLoadingButton(submitButton, "Создать");
     })
     .catch((error) => {
       console.error("Error:", error);
+    })
+    .finally(() => {
+      toggleLoadingButton(submitButton, "Сохранить");
     });
 }
 
@@ -177,6 +181,9 @@ function submitUpdateAvatar(event) {
     })
     .catch((error) => {
       console.error("Error:", error);
+    })
+    .finally(() => {
+      toggleLoadingButton(submitButton, "Сохранить");
     });
 }
 
