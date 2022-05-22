@@ -1,5 +1,5 @@
 const config = {
-  baseUrl: "https://nomoreparties.co/v1/plus-cohort-6/",
+  baseUrl: "https://nomoreparties.co/v1/plus-cohort-6",
   headers: {
     authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
     "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export function addCard(name, link) {
 
 export function deleteCard(cardId) {
   console.log("deleteCard:", cardId);
-  return fetch(config.baseUrl + "/cards/cardId", {
+  return fetch(config.baseUrl + "/cards/" + cardId, {
     method: "DELETE",
     headers: config.headers,
   }).then(checkResponse);
@@ -79,7 +79,7 @@ export function deleteCard(cardId) {
 
 export function giveLike(cardId) {
   console.log("giveLike:", cardId);
-  return fetch(config.baseUrl + "/cards/likes/cardId", {
+  return fetch(config.baseUrl + "/cards/likes/" + cardId, {
     method: "PUT",
     headers: config.headers,
   }).then(checkResponse);
@@ -87,7 +87,7 @@ export function giveLike(cardId) {
 
 export function removeLike(cardId) {
   console.log("removeLike:", cardId);
-  return fetch(config.baseUrl + "/cards/likes/cardId", {
+  return fetch(config.baseUrl + "/cards/likes/" + cardId, {
     method: "DELETE",
     headers: config.headers,
   }).then(checkResponse);
