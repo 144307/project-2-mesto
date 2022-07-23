@@ -1,22 +1,25 @@
-const config = {
-  baseUrl: "https://nomoreparties.co/v1/plus-cohort-6",
-  headers: {
-    authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
-    "Content-Type": "application/json",
-  },
-};
+// const this.config = {
+//   baseUrl: "https://nomoreparties.co/v1/plus-cohort-6",
+//   headers: {
+//     authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
+//     "Content-Type": "application/json",
+//   },
+// };
 
 export default class API {
-  // constructor(options) {}
+  constructor(config) {
+    this.config = config;
+  }
+
   getInitialCards() {
     return Promise.all([
-      fetch(config.baseUrl + "/cards", {
+      fetch(this.config.baseUrl + "/cards", {
         method: "GET",
-        headers: config.headers,
+        headers: this.config.headers,
       }).then(this.checkResponse),
-      fetch(config.baseUrl + "/users/me", {
+      fetch(this.config.baseUrl + "/users/me", {
         method: "GET",
-        headers: config.headers,
+        headers: this.config.headers,
       }).then(this.checkResponse),
     ]);
   }
@@ -32,9 +35,9 @@ export default class API {
     console.log("changeProfile");
     console.log("newName =", newName);
     console.log("newAbout =", newAbout);
-    return fetch(config.baseUrl + "/users/me", {
+    return fetch(this.config.baseUrl + "/users/me", {
       method: "PATCH",
-      headers: config.headers,
+      headers: this.config.headers,
       body: JSON.stringify({
         name: newName,
         about: newAbout,
@@ -46,9 +49,9 @@ export default class API {
     console.log("addCard");
     console.log("name =", name);
     console.log("link =", link);
-    return fetch(config.baseUrl + "/cards", {
+    return fetch(this.config.baseUrl + "/cards", {
       method: "POST",
-      headers: config.headers,
+      headers: this.config.headers,
       body: JSON.stringify({
         // name: "Marie Skłodowska Curie",
         // name: "fffdf",
@@ -62,33 +65,33 @@ export default class API {
   deleteCard(cardId) {
     console.log("BIG TEST deleteCard");
     console.log("deleteCard:", cardId);
-    return fetch(config.baseUrl + "/cards/" + cardId, {
+    return fetch(this.config.baseUrl + "/cards/" + cardId, {
       method: "DELETE",
-      headers: config.headers,
+      headers: this.config.headers,
     }).then(this.checkResponse);
   }
 
   giveLike(cardId) {
     console.log("giveLike:", cardId);
-    return fetch(config.baseUrl + "/cards/likes/" + cardId, {
+    return fetch(this.config.baseUrl + "/cards/likes/" + cardId, {
       method: "PUT",
-      headers: config.headers,
+      headers: this.config.headers,
     }).then(this.checkResponse);
   }
 
   removeLike(cardId) {
     console.log("removeLike:", cardId);
-    return fetch(config.baseUrl + "/cards/likes/" + cardId, {
+    return fetch(this.config.baseUrl + "/cards/likes/" + cardId, {
       method: "DELETE",
-      headers: config.headers,
+      headers: this.config.headers,
     }).then(this.checkResponse);
   }
 
   updateAvatar(avatarUrl) {
     console.log("updateAvatar");
-    return fetch(config.baseUrl + "/users/me/avatar", {
+    return fetch(this.config.baseUrl + "/users/me/avatar", {
       method: "PATCH",
-      headers: config.headers,
+      headers: this.config.headers,
       body: JSON.stringify({
         avatar: avatarUrl,
       }),
@@ -112,14 +115,14 @@ export default class API {
 //     //     authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
 //     //   },
 //     // }).then(checkResponse),
-//     fetch(config.baseUrl + "/cards", {
+//     fetch(this.config.baseUrl + "/cards", {
 //       method: "GET",
-//       headers: config.headers,
+//       headers: this.config.headers,
 //     }).then(checkResponse),
-//     fetch(config.baseUrl + "/users/me", {
+//     fetch(this.config.baseUrl + "/users/me", {
 //       // fetch("https://nomoreparties.co/v1/plus-cohort-6/cards", {
 //       method: "GET",
-//       headers: config.headers,
+//       headers: this.config.headers,
 //     }).then(checkResponse),
 //   ]);
 //   // .then((response) => {
@@ -132,9 +135,9 @@ export default class API {
 //   console.log("changeProfile");
 //   console.log("newName =", newName);
 //   console.log("newAbout =", newAbout);
-//   return fetch(config.baseUrl + "/users/me", {
+//   return fetch(this.config.baseUrl + "/users/me", {
 //     method: "PATCH",
-//     headers: config.headers,
+//     headers: this.config.headers,
 //     body: JSON.stringify({
 //       name: newName,
 //       about: newAbout,
@@ -146,9 +149,9 @@ export default class API {
 //   console.log("addCard");
 //   console.log("name =", name);
 //   console.log("link =", link);
-//   return fetch(config.baseUrl + "/cards", {
+//   return fetch(this.config.baseUrl + "/cards", {
 //     method: "POST",
-//     headers: config.headers,
+//     headers: this.config.headers,
 //     body: JSON.stringify({
 //       // name: "Marie Skłodowska Curie",
 //       // name: "fffdf",
@@ -161,33 +164,33 @@ export default class API {
 
 // export function deleteCard(cardId) {
 //   console.log("deleteCard:", cardId);
-//   return fetch(config.baseUrl + "/cards/" + cardId, {
+//   return fetch(this.config.baseUrl + "/cards/" + cardId, {
 //     method: "DELETE",
-//     headers: config.headers,
+//     headers: this.config.headers,
 //   }).then(checkResponse);
 // }
 
 // export function giveLike(cardId) {
 //   console.log("giveLike:", cardId);
-//   return fetch(config.baseUrl + "/cards/likes/" + cardId, {
+//   return fetch(this.config.baseUrl + "/cards/likes/" + cardId, {
 //     method: "PUT",
-//     headers: config.headers,
+//     headers: this.config.headers,
 //   }).then(checkResponse);
 // }
 
 // export function removeLike(cardId) {
 //   console.log("removeLike:", cardId);
-//   return fetch(config.baseUrl + "/cards/likes/" + cardId, {
+//   return fetch(this.config.baseUrl + "/cards/likes/" + cardId, {
 //     method: "DELETE",
-//     headers: config.headers,
+//     headers: this.config.headers,
 //   }).then(checkResponse);
 // }
 
 // export function updateAvatar(avatarUrl) {
 //   console.log("updateAvatar");
-//   return fetch(config.baseUrl + "/users/me/avatar", {
+//   return fetch(this.config.baseUrl + "/users/me/avatar", {
 //     method: "PATCH",
-//     headers: config.headers,
+//     headers: this.config.headers,
 //     body: JSON.stringify({
 //       avatar: avatarUrl,
 //     }),

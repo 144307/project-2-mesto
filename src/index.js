@@ -1,6 +1,7 @@
 // npm run build; npm run dev
 
 import { enableValidation } from "./scripts/validate.js";
+import FormValidator from "./scripts/validate.js";
 
 // import { toggleLoadingButton } from "./scripts/modal.js";
 import Modal from "./scripts/modal.js";
@@ -37,7 +38,15 @@ const avatarEditPopupCloseButton = avatarEditPopup.querySelector(
   "#close_avatar-edit_button"
 );
 
-const MyAPI = new API();
+const APIconfig = {
+  baseUrl: "https://nomoreparties.co/v1/plus-cohort-6",
+  headers: {
+    authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
+    "Content-Type": "application/json",
+  },
+};
+
+const MyAPI = new API(APIconfig);
 const MyModal = new Modal();
 MyModal.setListeners();
 

@@ -1,3 +1,7 @@
+export default class FormValidator {
+  constructor(options) {}
+}
+
 function showButton(submitButton) {
   submitButton.disabled = false;
 }
