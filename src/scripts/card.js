@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // import { openPopup } from "./modal.js";
 import Modal from "./modal.js";
 const MyModal = new Modal();
@@ -9,10 +11,18 @@ const overlayImage = document.querySelector(".overlay__image-popup-photo");
 const overlayImageTitle = document.querySelector(".overlay__image-popup-tilte");
 const imagePopup = document.querySelector(".overlay_type_picture");
 
+const APIconfig = {
+  baseUrl: "https://nomoreparties.co/v1/plus-cohort-6",
+  headers: {
+    authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
+    "Content-Type": "application/json",
+  },
+};
+
 ///
 
 import API from "./api.js";
-const MyAPI = new API();
+const MyAPI = new API(APIconfig);
 
 export default class Card {
   constructor(settings) {

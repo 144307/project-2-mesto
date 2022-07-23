@@ -1,6 +1,8 @@
+// @ts-nocheck
+
 // npm run build; npm run dev
 
-import { enableValidation } from "./scripts/validate.js";
+// import { enableValidation } from "./scripts/validate.js";
 import FormValidator from "./scripts/validate.js";
 
 // import { toggleLoadingButton } from "./scripts/modal.js";
@@ -235,13 +237,24 @@ editAvatarButton.addEventListener("click", function () {
   openAvatarEditPopup(avatarEditPopup);
 });
 
-enableValidation(
-  ".overlay__form",
-  ".overlay__form-input",
-  ".overlay__form-button",
-  ".overlay__form-error",
-  "overlay__form-input_error"
-);
+const FormValidatorSettings = {
+  formSelector: ".overlay__form",
+  inputSelector: ".overlay__form-input",
+  submitsubmitButton: ".overlay__form-button",
+  inputSubtitleErrorClass: ".overlay__form-error",
+  inputErrorClass: "overlay__form-input_error",
+};
+
+const MyFormValidator = new FormValidator(FormValidatorSettings);
+MyFormValidator.enableValidation();
+
+// enableValidation(
+//   ".overlay__form",
+//   ".overlay__form-input",
+//   ".overlay__form-button",
+//   ".overlay__form-error",
+//   "overlay__form-input_error"
+// );
 
 // changeProfile("Marie Skłodowska Curie", "Physicist and Chemist").then(
 // changeProfile("ffffsdfsdf sdf sdf", "Physicist and Chemist").then((result) => {
