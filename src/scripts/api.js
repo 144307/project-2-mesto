@@ -12,7 +12,7 @@ export default class API {
   //   this.width = width;
   // }
   constructor(config) {
-    this.config = config; // ? //
+    this.config = config;
     // this.baseUrl = configS.baseUrl;
     // this.headers = config.headers;
   }

@@ -245,8 +245,23 @@ const FormValidatorSettings = {
   inputErrorClass: "overlay__form-input_error",
 };
 
-const MyFormValidator = new FormValidator(FormValidatorSettings);
-MyFormValidator.enableValidation();
+const editForm = document.querySelector("#edit_form");
+const editFormInput = editForm.querySelector(".overlay__form-input");
+const newCardForm = document.querySelector("#newCardForm");
+const newCardFormInput = document.querySelector(".overlay__form-input");
+
+const editValidate = new FormValidator(FormValidatorSettings, editFormInput);
+editValidate.enableValidation();
+const addValidate = new FormValidator(FormValidatorSettings, newCardForm);
+addValidate.enableValidation();
+const avatarValidate = new FormValidator(
+  FormValidatorSettings,
+  newCardFormInput
+);
+avatarValidate.enableValidation();
+
+// const MyFormValidator = new FormValidator(FormValidatorSettings);
+// MyFormValidator.enableValidation();
 
 // enableValidation(
 //   ".overlay__form",
