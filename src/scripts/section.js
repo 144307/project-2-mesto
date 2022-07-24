@@ -12,6 +12,8 @@ export default class Section {
   }
 
   addItem(domElement) {
-    this._container.append(domElement);
+    const elements = document.querySelector(".elements");
+    elements.append(domElement);
+    // this._container.append(domElement);
   }
 }

@@ -4,9 +4,11 @@
 
 // import { enableValidation } from "./scripts/validate.js";
 import FormValidator from "./scripts/validate.js";
+import Section from "./scripts/section.js";
 
 // import { toggleLoadingButton } from "./scripts/modal.js";
 import Modal from "./scripts/modal.js";
+import { Popup, PopupWithImage, PopupWithForm } from "./scripts/popup.js";
 
 import API from "./scripts/api.js";
 
@@ -51,8 +53,13 @@ const APIconfig = {
 const MyAPI = new API(APIconfig);
 const MyModal = new Modal();
 MyModal.setListeners();
+const MyProfilePopupWithForm = new PopupWithForm(profilePopup);
+const MyNewCardPopupWithForm = new PopupWithForm(newCardPopup);
+const MyImagePopupWithImage = new PopupWithImage(imagePopup);
+const MyAvatarPopupWithForm = new PopupWithForm(avatarEditPopup);
 
 // getCardsAndInfo()
+var testElements = [];
 MyAPI.getInitialCards()
   .then((response) => {
     // owner = response[1].name;
@@ -82,15 +89,15 @@ MyAPI.getInitialCards()
 
       const cardObject = new Card(settings);
       cardObject.createCard();
+      testElements.push(cardObject);
       elements.prepend(cardObject.card);
 
       cardObject.card.logCard;
     }
-    console.log("cardsData =", response[0]);
+    // const MySection = new Section(testElements, elements);
 
     profileName.textContent = response[1].name;
     profileInfo.textContent = response[1].about;
-    // console.log("owner =", owner);
     profileAvatar.setAttribute("src", response[1].avatar);
   })
   .catch((error) => {
@@ -125,21 +132,21 @@ const addForm = document.querySelector("#add_form");
 const avatarEditForm = document.querySelector("#avatar_edit_form");
 
 function openProfilePopup(profilePopup) {
-  MyModal.openFormOverlay(profilePopup);
+  // MyModal.openFormOverlay(profilePopup);
   inputName.value = profileName.textContent;
   inputJob.value = profileInfo.textContent;
-  MyModal.openPopup(profilePopup);
+  // MyModal.openPopup(profilePopup);
 }
 
-function openNewCardPopup(newCardPopup) {
-  MyModal.openFormOverlay(newCardPopup);
-  MyModal.openPopup(newCardPopup);
-}
+// function openNewCardPopup(newCardPopup) {
+//   MyModal.openFormOverlay(newCardPopup);
+//   MyModal.openPopup(newCardPopup);
+// }
 
-function openAvatarEditPopup(avatarEditPopup) {
-  MyModal.openFormOverlay(avatarEditPopup);
-  MyModal.openPopup(avatarEditPopup);
-}
+// function openAvatarEditPopup(avatarEditPopup) {
+//   MyModal.openFormOverlay(avatarEditPopup);
+//   MyModal.openPopup(avatarEditPopup);
+// }
 
 function submitTitleChanges(event) {
   event.preventDefault();
@@ -228,13 +235,16 @@ const addButton = document.querySelector(".profile__add-button");
 const editAvatarButton = document.querySelector(".profile__avatar-overlay");
 
 editButton.addEventListener("click", function () {
+  MyProfilePopupWithForm.open();
   openProfilePopup(profilePopup);
 });
 addButton.addEventListener("click", function () {
-  openNewCardPopup(newCardPopup);
+  MyNewCardPopupWithForm.open();
+  // openNewCardPopup(newCardPopup);
 });
 editAvatarButton.addEventListener("click", function () {
-  openAvatarEditPopup(avatarEditPopup);
+  MyAvatarPopupWithForm.open();
+  // openAvatarEditPopup(avatarEditPopup);
 });
 
 const FormValidatorSettings = {
