@@ -10,6 +10,7 @@ import { Popup, PopupWithImage, PopupWithForm } from "./scripts/popup.js";
 
 import API from "./scripts/api.js";
 import { changeProfile } from "./scripts/api.js";
+import UserInfo from "./scripts/userinfo.js";
 
 import "./pages/index.css";
 
@@ -38,14 +39,19 @@ const APIconfig = {
   },
 };
 
+const UserInfoConfig = {
+  nameSelector: profileName,
+  aboutSelector: profileInfo,
+};
+
 const MyAPI = new API(APIconfig);
-// MyModal.setListeners();
 const MyProfilePopupWithForm = new PopupWithForm(profilePopup);
 MyProfilePopupWithForm.setEventListeners();
 const MyNewCardPopupWithForm = new PopupWithForm(newCardPopup);
 MyNewCardPopupWithForm.setEventListeners();
 const MyAvatarPopupWithForm = new PopupWithForm(avatarEditPopup);
 MyAvatarPopupWithForm.setEventListeners();
+const MyUserInfo = new UserInfo(UserInfoConfig);
 
 // getCardsAndInfo()
 var testElements = [];
@@ -106,18 +112,12 @@ function openProfilePopup(profilePopup) {
 function submitTitleChanges(event) {
   event.preventDefault();
   MyProfilePopupWithForm.toggleLoadingButton("Сохранение...");
-  MyAPI.changeProfile(inputName.value, inputJob.value)
-    .then(() => {
-      profileName.textContent = inputName.value;
-      profileInfo.textContent = inputJob.value;
-      MyProfilePopupWithForm.close();
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    })
-    .finally(() => {
-      MyProfilePopupWithForm.toggleLoadingButton("Сохранить");
-    });
+  MyUserInfo.setUserInfo({
+    name: inputName.value,
+    about: inputJob.value,
+  });
+  MyProfilePopupWithForm.close();
+  MyProfilePopupWithForm.toggleLoadingButton("Сохранить");
 }
 
 function submitCardCreation(event) {
