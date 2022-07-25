@@ -1,19 +1,21 @@
 export default class Section {
-  constructor({ renderer }, containerSelector) {
-    // объект настроек и классы формы
-    this._renderer = renderer;
-    this._container = containerSelector;
+  constructor(settings, selector) {
+    this.items = settings.items;
+    this.rerender = settings.rerender;
+    this.selector = selector;
+    // this.renderAll();
   }
 
-  renderAll(items) {
-    items.forEach((item) => {
-      this._renderer(item);
-    });
+  renderAll() {
+    for (let i = 0; i < this.items.length; i++) {
+      this.addItem(this.rerender(this.items[i]));
+    }
   }
 
-  addItem(domElement) {
-    const elements = document.querySelector(".elements");
-    elements.append(domElement);
-    // this._container.append(domElement);
+  addItem(element) {
+    const container = document.querySelector(this.selector);
+    container.prepend(element);
   }
 }
+
+// PopupWithImage

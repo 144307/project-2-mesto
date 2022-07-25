@@ -2,21 +2,18 @@
 
 // npm run build; npm run dev
 
-// import { enableValidation } from "./scripts/validate.js";
 import FormValidator from "./scripts/validate.js";
 import Section from "./scripts/section.js";
 
-import { Popup, PopupWithImage, PopupWithForm } from "./scripts/popup.js";
+import { PopupWithForm } from "./scripts/popup.js";
 
 import API from "./scripts/api.js";
-import { changeProfile } from "./scripts/api.js";
+import Card from "./scripts/card.js";
 import UserInfo from "./scripts/userinfo.js";
 
 import "./pages/index.css";
 
 let owner;
-
-import Card from "./scripts/card.js";
 
 const profilePopup = document.querySelector(".overlay_type_profile");
 const newCardPopup = document.querySelector(".overlay_type_card-add");
@@ -53,8 +50,19 @@ const MyAvatarPopupWithForm = new PopupWithForm(avatarEditPopup);
 MyAvatarPopupWithForm.setEventListeners();
 const MyUserInfo = new UserInfo(UserInfoConfig);
 
-// getCardsAndInfo()
 var testElements = [];
+const MySection = new Section(
+  {
+    items: testElements,
+    rerender: (element) => {
+      const cardObject = new Card(element);
+      return cardObject.createCard();
+    },
+  },
+  ".elements"
+);
+MySection.renderAll();
+
 MyAPI.getInitialCards()
   .then((response) => {
     owner = response[1]._id;
@@ -64,7 +72,7 @@ MyAPI.getInitialCards()
       if (owner === response[0][i].owner._id) {
         owned = true;
       }
-      const settings = {
+      const cardSettings = {
         name: response[0][i].name,
         link: response[0][i].link,
         likes: response[0][i].likes,
@@ -72,15 +80,25 @@ MyAPI.getInitialCards()
         cardId: response[0][i]._id,
         ownerId: owner,
       };
+      MySection.addItem(MySection.rerender(cardSettings));
 
-      const cardObject = new Card(settings);
-      cardObject.createCard();
-      testElements.push(cardObject);
-      elements.prepend(cardObject.card);
-
-      cardObject.card.logCard;
+      // const cardObject = new Card(cardSettings);
+      // cardObject.createCard();
+      testElements.push(cardSettings);
+      // elements.prepend(cardObject.card);
     }
-    // const MySection = new Section(testElements, elements);
+
+    // const MySection = new Section(
+    //   {
+    //     items: testElements,
+    //     rerender: (element) => {
+    //       const cardObject = new Card(element);
+    //       return cardObject.createCard();
+    //     },
+    //   },
+    //   ".elements"
+    // );
+    // MySection.renderAll();
 
     profileName.textContent = response[1].name;
     profileInfo.textContent = response[1].about;
@@ -125,21 +143,22 @@ function submitCardCreation(event) {
   MyNewCardPopupWithForm.toggleLoadingButton("Создание...");
   MyAPI.addCard(inputCardName.value, inputCardImageUrl.value)
     .then((response) => {
+      console.log("response =", response);
       const newCardId = response._id;
-      console.log("added card id =", response._id);
-      console.log("TEST =", newCardId);
 
-      const settings = {
+      const cardSettings = {
         name: inputCardName.value,
         link: inputCardImageUrl.value,
         likes: 0,
         owned: true,
         cardId: newCardId,
       };
+      MySection.addItem(MySection.rerender(cardSettings));
 
-      const cardObject = new Card(settings);
-      cardObject.createCard();
-      elements.prepend(cardObject.card);
+      // const cardObject = new Card(cardSettings);
+      // cardObject.createCard();
+      // elements.prepend(cardObject.card);
+
       MyNewCardPopupWithForm.close();
     })
     .catch((error) => {

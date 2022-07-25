@@ -1,3 +1,4 @@
+// @ts-nocheck
 // default
 export class Popup {
   constructor(selector) {
@@ -60,9 +61,39 @@ export class Popup {
   }
 }
 
+const overlayImage = document.querySelector(".overlay__image-popup-photo");
+const overlayImageTitle = document.querySelector(".overlay__image-popup-tilte");
+
 export class PopupWithImage extends Popup {
-  // open() {}
+  open(imageSettings) {
+    overlayImage.setAttribute("src", imageSettings.src);
+    overlayImage.setAttribute("alt", imageSettings.alt);
+    overlayImageTitle.textContent = imageSettings.alt;
+    super.open();
+  }
 }
+
+// export class PopupWithImage extends Popup {
+//   constructor(image) {
+//     super();
+//     this.src = image.src;
+//     this.alt = image.alt;
+//   }
+//   open() {
+//     const cardTemplate = document.querySelector("#card").content;
+//     const card = cardTemplate.querySelector(".card").cloneNode(true);
+//     const cardImage = card.querySelector(".card__image");
+//     cardImage.setAttribute("src", this.src);
+//     cardImage.setAttribute("alt", this.alt);
+//   }
+
+//   // openImage(name, link) {
+//   //   super.open();
+//   //   this._image.src = link;
+//   //   this._image.alt = name;
+//   //   this._title.textContent = name;
+//   // }
+// }
 
 export class PopupWithForm extends Popup {
   constructor(overlay) {

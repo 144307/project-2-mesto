@@ -44,6 +44,7 @@ export default class Card {
 
   createCard() {
     // console.log("createCard cardId =", this._cardId);
+
     const cardTemplate = document.querySelector("#card").content;
     const card = cardTemplate.querySelector(".card").cloneNode(true);
     const cardImage = card.querySelector(".card__image");
@@ -132,11 +133,20 @@ export default class Card {
   }
 
   openImagePopup(openButton) {
-    overlayImage.setAttribute("src", openButton.currentTarget.src);
-    overlayImage.setAttribute("alt", openButton.currentTarget.alt);
-    overlayImageTitle.textContent = openButton.currentTarget.alt;
-    // MyModal.openPopup(imagePopup);
-    MyImagePopupWithImage.open();
+    console.log("openImagePopup");
+    console.log(overlayImage);
+
+    const imageSettings = {
+      src: openButton.currentTarget.src,
+      alt: openButton.currentTarget.alt,
+      image: overlayImage,
+    };
+
+    // overlayImage.setAttribute("src", openButton.currentTarget.src);
+    // overlayImage.setAttribute("alt", openButton.currentTarget.alt);
+    // overlayImageTitle.textContent = openButton.currentTarget.alt;
+
+    MyImagePopupWithImage.open(imageSettings);
   }
 }
 

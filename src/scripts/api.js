@@ -7,10 +7,6 @@
 // };
 
 export default class API {
-  // constructor(height, width) {
-  //   this.height = height;
-  //   this.width = width;
-  // }
   constructor(config) {
     this.baseUrl = config.baseUrl;
     this.headers = config.headers;
