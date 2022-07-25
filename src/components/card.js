@@ -3,8 +3,9 @@
 // import { openPopup } from "./modal.js";
 // import Modal from "./modal.js";
 // const MyModal = new Modal();
-import { PopupWithImage } from "./popup.js";
+// import { PopupWithImage } from "./popup.js";
 
+import PopupWithImage from "./PopupWithImage.js";
 // import { openImagePopup } from "./modal.js";
 // import { testModal } from "./modal.js";
 

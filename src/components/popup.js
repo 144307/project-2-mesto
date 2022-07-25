@@ -1,6 +1,6 @@
 // @ts-nocheck
-// default
-export class Popup {
+
+export default class Popup {
   constructor(selector) {
     this.overlay = selector;
   }
@@ -61,17 +61,17 @@ export class Popup {
   }
 }
 
-const overlayImage = document.querySelector(".overlay__image-popup-photo");
-const overlayImageTitle = document.querySelector(".overlay__image-popup-tilte");
+// const overlayImage = document.querySelector(".overlay__image-popup-photo");
+// const overlayImageTitle = document.querySelector(".overlay__image-popup-tilte");
 
-export class PopupWithImage extends Popup {
-  open(imageSettings) {
-    overlayImage.setAttribute("src", imageSettings.src);
-    overlayImage.setAttribute("alt", imageSettings.alt);
-    overlayImageTitle.textContent = imageSettings.alt;
-    super.open();
-  }
-}
+// export class PopupWithImage extends Popup {
+//   open(imageSettings) {
+//     overlayImage.setAttribute("src", imageSettings.src);
+//     overlayImage.setAttribute("alt", imageSettings.alt);
+//     overlayImageTitle.textContent = imageSettings.alt;
+//     super.open();
+//   }
+// }
 
 // export class PopupWithImage extends Popup {
 //   constructor(image) {
@@ -95,21 +95,21 @@ export class PopupWithImage extends Popup {
 //   // }
 // }
 
-export class PopupWithForm extends Popup {
-  constructor(overlay) {
-    super();
-    this.overlay = overlay;
-  }
+// export class PopupWithForm extends Popup {
+//   constructor(overlay) {
+//     super();
+//     this.overlay = overlay;
+//   }
 
-  open() {
-    this.overlay.querySelector(".overlay__form-button").disabled = true;
-    this._resetFormErrros();
-    this.overlay.classList.add("overlay_opened");
-    document.addEventListener("keydown", this._handleEscClose);
-  }
+//   open() {
+//     this.overlay.querySelector(".overlay__form-button").disabled = true;
+//     this._resetFormErrros();
+//     this.overlay.classList.add("overlay_opened");
+//     document.addEventListener("keydown", this._handleEscClose);
+//   }
 
-  toggleLoadingButton(newValue) {
-    let submitButton = this.overlay.querySelector(".overlay__form-button");
-    submitButton.value = newValue;
-  }
-}
+//   toggleLoadingButton(newValue) {
+//     let submitButton = this.overlay.querySelector(".overlay__form-button");
+//     submitButton.value = newValue;
+//   }
+// }

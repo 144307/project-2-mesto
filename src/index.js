@@ -2,14 +2,15 @@
 
 // npm run build; npm run dev
 
-import FormValidator from "./scripts/validate.js";
-import Section from "./scripts/section.js";
+import FormValidator from "./components/validate.js";
+import Section from "./components/section.js";
 
-import { PopupWithForm } from "./scripts/popup.js";
+// import { PopupWithForm } from "./components/popup.js";
+import PopupWithForm from "./components/PopupWithForm.js";
 
-import API from "./scripts/api.js";
-import Card from "./scripts/card.js";
-import UserInfo from "./scripts/userinfo.js";
+import API from "./components/api.js";
+import Card from "./components/card.js";
+import UserInfo from "./components/userinfo.js";
 
 import "./pages/index.css";
 
