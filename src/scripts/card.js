@@ -1,8 +1,9 @@
 // @ts-nocheck
 
 // import { openPopup } from "./modal.js";
-import Modal from "./modal.js";
-const MyModal = new Modal();
+// import Modal from "./modal.js";
+// const MyModal = new Modal();
+import { PopupWithImage } from "./popup.js";
 
 // import { openImagePopup } from "./modal.js";
 // import { testModal } from "./modal.js";
@@ -23,6 +24,8 @@ const APIconfig = {
 
 import API from "./api.js";
 const MyAPI = new API(APIconfig);
+const MyImagePopupWithImage = new PopupWithImage(imagePopup);
+MyImagePopupWithImage.setEventListeners();
 
 export default class Card {
   constructor(settings) {
@@ -35,12 +38,12 @@ export default class Card {
     this.card = null;
   }
 
-  logCard() {
-    console.log("logCard", this.card);
-  }
+  // logCard() {
+  //   console.log("logCard", this.card);
+  // }
 
   createCard() {
-    console.log("createCard cardId =", this._cardId);
+    // console.log("createCard cardId =", this._cardId);
     const cardTemplate = document.querySelector("#card").content;
     const card = cardTemplate.querySelector(".card").cloneNode(true);
     const cardImage = card.querySelector(".card__image");
@@ -51,8 +54,8 @@ export default class Card {
     const likeButton = card.querySelector(".card__heart");
     const counter = card.querySelector(".card__heart-counter");
     for (let i = 0; i < this._likes.length; i++) {
-      console.log(this._likes[i]._id);
-      console.log(this._ownerId);
+      // console.log(this._likes[i]._id);
+      // console.log(this._ownerId);
       if (this._likes[i]._id.localeCompare(this._ownerId) === 0) {
         this._turnOnLike(card.querySelector(".card__heart"));
       }
@@ -132,7 +135,8 @@ export default class Card {
     overlayImage.setAttribute("src", openButton.currentTarget.src);
     overlayImage.setAttribute("alt", openButton.currentTarget.alt);
     overlayImageTitle.textContent = openButton.currentTarget.alt;
-    MyModal.openPopup(imagePopup);
+    // MyModal.openPopup(imagePopup);
+    MyImagePopupWithImage.open();
   }
 }
 

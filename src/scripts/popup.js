@@ -1,26 +1,10 @@
 // default
 export class Popup {
-  // constructor(options) {}
-  setListeners(selector) {
-    // this.overlay = document.querySelector(selector);
+  constructor(selector) {
     this.overlay = selector;
-
-    this.overlay.addEventListener("click", (event) => {
-      if (event.target === selector) {
-        this.close();
-      }
-    });
-    // const overlays = document.querySelectorAll(".overlay");
-    // overlays.forEach((overlay) => {
-    //   overlay.addEventListener("click", (event) => {
-    //     if (event.target === overlay) {
-    //       this.close();
-    //     }
-    //   });
-    // });
   }
 
-  resetFormErrros() {
+  _resetFormErrros() {
     console.log(this.overlay);
     const errors = this.overlay.querySelectorAll(".overlay__form-error");
     for (let i = 0; i < errors.length; i++) {
@@ -35,58 +19,66 @@ export class Popup {
     }
   }
 
-  toggleLoadingButton(submitButton, newValue) {
-    // let submitButton = overlay.querySelector(".overlay__form-button");
-    submitButton.value = newValue;
-  }
-
-  openFormOverlay() {
-    this.overlay.querySelector(".overlay__form-button").disabled = true;
-    this.resetFormErrros();
-  }
+  // toggleLoadingButton(submitButton, newValue) {
+  //   // let submitButton = overlay.querySelector(".overlay__form-button");
+  //   submitButton.value = newValue;
+  // }
 
   open() {
     this.overlay.classList.add("overlay_opened");
-    document.addEventListener("keydown", this.handleEsc);
+    document.addEventListener("keydown", this._handleEscClose);
   }
 
   close() {
     console.log("popup.js close()");
     const overlay = document.querySelector(".overlay_opened");
-    console.log("popup.js close() overlay", overlay);
     overlay.classList.remove("overlay_opened");
-    document.removeEventListener("keydown", this.handleEsc);
-    // return "close";
+    document.removeEventListener("keydown", this._handleEscClose);
   }
 
-  handleEsc(event) {
+  _handleEscClose(event) {
     if (event.key === "Escape") {
-      this.close();
-      // console.log(this.close());
-      console.log("popup.js handleEsc()");
+      console.log("popup.js _handleEscClose()");
+      // this.close();
+      const overlay = document.querySelector(".overlay_opened");
+      overlay.classList.remove("overlay_opened");
+      document.removeEventListener("keydown", this._handleEscClose);
     }
+  }
+
+  setEventListeners() {
+    const closeButton = this.overlay.querySelector(".overlay__close-button");
+    closeButton.addEventListener("click", () => {
+      this.close();
+    });
+    this.overlay.addEventListener("click", (event) => {
+      if (event.target === this.overlay) {
+        console.log("popup.js event.target === selector");
+        this.close();
+      }
+    });
   }
 }
 
 export class PopupWithImage extends Popup {
-  open() {}
+  // open() {}
 }
-
-// const inputName = document.querySelector("#overlay__form-input_line-one");
-// const inputJob = document.querySelector("#overlay__form-input_line-two");
-// const profileName = document.querySelector(".profile__intro-title");
-// const profileInfo = document.querySelector(".profile__intro-subtitle");
 
 export class PopupWithForm extends Popup {
   constructor(overlay) {
     super();
     this.overlay = overlay;
   }
+
   open() {
-    // document.addEventListener("keydown", this.handleEsc);
     this.overlay.querySelector(".overlay__form-button").disabled = true;
-    this.resetFormErrros();
+    this._resetFormErrros();
     this.overlay.classList.add("overlay_opened");
-    document.addEventListener("keydown", this.handleEsc);
+    document.addEventListener("keydown", this._handleEscClose);
+  }
+
+  toggleLoadingButton(newValue) {
+    let submitButton = this.overlay.querySelector(".overlay__form-button");
+    submitButton.value = newValue;
   }
 }

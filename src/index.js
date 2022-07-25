@@ -6,11 +6,10 @@
 import FormValidator from "./scripts/validate.js";
 import Section from "./scripts/section.js";
 
-// import { toggleLoadingButton } from "./scripts/modal.js";
-import Modal from "./scripts/modal.js";
 import { Popup, PopupWithImage, PopupWithForm } from "./scripts/popup.js";
 
 import API from "./scripts/api.js";
+import { changeProfile } from "./scripts/api.js";
 
 import "./pages/index.css";
 
@@ -20,7 +19,7 @@ import Card from "./scripts/card.js";
 
 const profilePopup = document.querySelector(".overlay_type_profile");
 const newCardPopup = document.querySelector(".overlay_type_card-add");
-const imagePopup = document.querySelector(".overlay_type_picture");
+// const imagePopup = document.querySelector(".overlay_type_picture");
 const avatarEditPopup = document.querySelector(".overlay_type_avatar-edit");
 
 const profileAvatar = document.querySelector(".profile__avatar");
@@ -31,17 +30,6 @@ const elements = document.querySelector(".elements");
 const inputName = document.querySelector("#overlay__form-input_line-one");
 const inputJob = document.querySelector("#overlay__form-input_line-two");
 
-const profilePopupCloseButton = profilePopup.querySelector(
-  "#close_profile_button"
-);
-const newCardPopupCloseButton = newCardPopup.querySelector(
-  "#close_card-add_button"
-);
-const imagePopupCloseButton = imagePopup.querySelector("#close_picture_button");
-const avatarEditPopupCloseButton = avatarEditPopup.querySelector(
-  "#close_avatar-edit_button"
-);
-
 const APIconfig = {
   baseUrl: "https://nomoreparties.co/v1/plus-cohort-6",
   headers: {
@@ -51,18 +39,18 @@ const APIconfig = {
 };
 
 const MyAPI = new API(APIconfig);
-const MyModal = new Modal();
-MyModal.setListeners();
+// MyModal.setListeners();
 const MyProfilePopupWithForm = new PopupWithForm(profilePopup);
+MyProfilePopupWithForm.setEventListeners();
 const MyNewCardPopupWithForm = new PopupWithForm(newCardPopup);
-const MyImagePopupWithImage = new PopupWithImage(imagePopup);
+MyNewCardPopupWithForm.setEventListeners();
 const MyAvatarPopupWithForm = new PopupWithForm(avatarEditPopup);
+MyAvatarPopupWithForm.setEventListeners();
 
 // getCardsAndInfo()
 var testElements = [];
 MyAPI.getInitialCards()
   .then((response) => {
-    // owner = response[1].name;
     owner = response[1]._id;
 
     for (let i = 0; i < response[0].length; i++) {
@@ -70,14 +58,6 @@ MyAPI.getInitialCards()
       if (owner === response[0][i].owner._id) {
         owned = true;
       }
-      // const card = createCard(
-      //   response[0][i].name,
-      //   response[0][i].link,
-      //   response[0][i].likes,
-      //   owned,
-      //   response[0][i]._id,
-      //   owner
-      // );
       const settings = {
         name: response[0][i].name,
         link: response[0][i].link,
@@ -114,64 +94,35 @@ const inputProfileImage = document.querySelector(
   "#overlay__form-new-profile-image-input"
 );
 
-profilePopupCloseButton.addEventListener("click", () => {
-  MyModal.closePopup();
-});
-newCardPopupCloseButton.addEventListener("click", () => {
-  MyModal.closePopup();
-});
-imagePopupCloseButton.addEventListener("click", () => {
-  MyModal.closePopup();
-});
-avatarEditPopupCloseButton.addEventListener("click", () => {
-  MyModal.closePopup();
-});
-
 const editProfileForm = document.querySelector("#edit_form");
 const addForm = document.querySelector("#add_form");
 const avatarEditForm = document.querySelector("#avatar_edit_form");
 
 function openProfilePopup(profilePopup) {
-  // MyModal.openFormOverlay(profilePopup);
   inputName.value = profileName.textContent;
   inputJob.value = profileInfo.textContent;
-  // MyModal.openPopup(profilePopup);
 }
-
-// function openNewCardPopup(newCardPopup) {
-//   MyModal.openFormOverlay(newCardPopup);
-//   MyModal.openPopup(newCardPopup);
-// }
-
-// function openAvatarEditPopup(avatarEditPopup) {
-//   MyModal.openFormOverlay(avatarEditPopup);
-//   MyModal.openPopup(avatarEditPopup);
-// }
 
 function submitTitleChanges(event) {
   event.preventDefault();
-  const submitButton = event.submitter;
-  MyModal.toggleLoadingButton(submitButton, "Сохранение...");
-  // changeProfile(profileName.textContent, profileInfo.textContent)
-  MyAPI.changeProfile(profileName.textContent, profileInfo.textContent)
-    .then((response) => {
+  MyProfilePopupWithForm.toggleLoadingButton("Сохранение...");
+  MyAPI.changeProfile(inputName.value, inputJob.value)
+    .then(() => {
       profileName.textContent = inputName.value;
       profileInfo.textContent = inputJob.value;
-      MyModal.closePopup();
+      MyProfilePopupWithForm.close();
     })
     .catch((error) => {
       console.error("Error:", error);
     })
     .finally(() => {
-      MyModal.toggleLoadingButton(submitButton, "Сохранить");
+      MyProfilePopupWithForm.toggleLoadingButton("Сохранить");
     });
-  // closePopup();
 }
 
 function submitCardCreation(event) {
   event.preventDefault();
-  const submitButton = event.submitter;
-  MyModal.toggleLoadingButton(submitButton, "Создание...");
+  MyNewCardPopupWithForm.toggleLoadingButton("Создание...");
   MyAPI.addCard(inputCardName.value, inputCardImageUrl.value)
     .then((response) => {
       const newCardId = response._id;
@@ -189,40 +140,31 @@ function submitCardCreation(event) {
       const cardObject = new Card(settings);
       cardObject.createCard();
       elements.prepend(cardObject.card);
-
-      // const card = createCard(
-      //   inputCardName.value,
-      //   inputCardImageUrl.value,
-      //   0,
-      //   true,
-      //   newCardId
-      // );
-      // elements.prepend(card);
-      MyModal.closePopup();
+      MyNewCardPopupWithForm.close();
     })
     .catch((error) => {
       console.error("Error:", error);
     })
     .finally(() => {
-      MyModal.toggleLoadingButton(submitButton, "Сохранить");
+      MyNewCardPopupWithForm.toggleLoadingButton("Сохранить");
     });
 }
 
 function submitUpdateAvatar(event) {
   event.preventDefault();
   const submitButton = event.submitter;
-  MyModal.toggleLoadingButton(submitButton, "Сохранение...");
+  MyAvatarPopupWithForm.toggleLoadingButton("Сохранение...");
   MyAPI.updateAvatar(inputProfileImage.value)
     .then((response) => {
-      MyModal.closePopup();
-      MyModal.toggleLoadingButton(submitButton, "Сохранить");
+      MyAvatarPopupWithForm.close();
+      MyAvatarPopupWithForm.toggleLoadingButton("Сохранить");
       profileAvatar.setAttribute("src", inputProfileImage.value);
     })
     .catch((error) => {
       console.error("Error:", error);
     })
     .finally(() => {
-      MyModal.toggleLoadingButton(submitButton, "Сохранить");
+      MyAvatarPopupWithForm.toggleLoadingButton("Сохранить");
     });
 }
 
@@ -240,11 +182,9 @@ editButton.addEventListener("click", function () {
 });
 addButton.addEventListener("click", function () {
   MyNewCardPopupWithForm.open();
-  // openNewCardPopup(newCardPopup);
 });
 editAvatarButton.addEventListener("click", function () {
   MyAvatarPopupWithForm.open();
-  // openAvatarEditPopup(avatarEditPopup);
 });
 
 const FormValidatorSettings = {
