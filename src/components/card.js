@@ -1,16 +1,9 @@
 // @ts-nocheck
 
-// import { openPopup } from "./modal.js";
-// import Modal from "./modal.js";
-// const MyModal = new Modal();
-// import { PopupWithImage } from "./popup.js";
-
 import PopupWithImage from "./PopupWithImage.js";
-// import { openImagePopup } from "./modal.js";
-// import { testModal } from "./modal.js";
+import API from "./api.js";
 
 const overlayImage = document.querySelector(".overlay__image-popup-photo");
-const overlayImageTitle = document.querySelector(".overlay__image-popup-tilte");
 const imagePopup = document.querySelector(".overlay_type_picture");
 
 const APIconfig = {
@@ -23,7 +16,6 @@ const APIconfig = {
 
 ///
 
-import API from "./api.js";
 const MyAPI = new API(APIconfig);
 const MyImagePopupWithImage = new PopupWithImage(imagePopup);
 MyImagePopupWithImage.setEventListeners();
@@ -35,17 +27,11 @@ export default class Card {
     this._likes = settings.likes;
     this._owned = settings.owned;
     this._cardId = settings.cardId;
-    this._ownerId = settings.owner;
+    this._ownerId = settings.ownerId;
     this.card = null;
   }
 
-  // logCard() {
-  //   console.log("logCard", this.card);
-  // }
-
   createCard() {
-    // console.log("createCard cardId =", this._cardId);
-
     const cardTemplate = document.querySelector("#card").content;
     const card = cardTemplate.querySelector(".card").cloneNode(true);
     const cardImage = card.querySelector(".card__image");
@@ -56,8 +42,8 @@ export default class Card {
     const likeButton = card.querySelector(".card__heart");
     const counter = card.querySelector(".card__heart-counter");
     for (let i = 0; i < this._likes.length; i++) {
-      // console.log(this._likes[i]._id);
-      // console.log(this._ownerId);
+      // console.log("this._likes[i]._id", this._likes[i]._id);
+      // console.log("this._ownerId", this._ownerId);
       if (this._likes[i]._id.localeCompare(this._ownerId) === 0) {
         this._turnOnLike(card.querySelector(".card__heart"));
       }
@@ -99,7 +85,6 @@ export default class Card {
         .catch((error) => {
           console.error("Error:", error);
         });
-      // likeButton.currentTarget.classList.add("card__heart_selected");
       return likes;
     } else {
       MyAPI.removeLike(cardId)
@@ -112,40 +97,29 @@ export default class Card {
         .catch((error) => {
           console.error("Error:", error);
         });
-      // likeButton.currentf.classList.remove("card__heart_selected");
       return likes;
     }
   }
 
-  removeCard(card, cardId) {
+  removeCard(event, cardId) {
     console.log("removeCard ID =", cardId);
 
-    console.log("card =", card);
     MyAPI.deleteCard(cardId)
       .then((response) => {
-        card.target.closest(".card").remove();
+        event.target.closest(".card").remove();
         console.log("testDeleting response =", response);
-        console.log("card =", card);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-    console.log(card);
   }
 
   openImagePopup(openButton) {
-    console.log("openImagePopup");
-    console.log(overlayImage);
-
     const imageSettings = {
       src: openButton.currentTarget.src,
       alt: openButton.currentTarget.alt,
       image: overlayImage,
     };
-
-    // overlayImage.setAttribute("src", openButton.currentTarget.src);
-    // overlayImage.setAttribute("alt", openButton.currentTarget.alt);
-    // overlayImageTitle.textContent = openButton.currentTarget.alt;
 
     MyImagePopupWithImage.open(imageSettings);
   }

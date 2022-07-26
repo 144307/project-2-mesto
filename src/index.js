@@ -5,8 +5,8 @@
 import FormValidator from "./components/validate.js";
 import Section from "./components/section.js";
 
-// import { PopupWithForm } from "./components/popup.js";
 import PopupWithForm from "./components/PopupWithForm.js";
+import PopupWithImage from "./components/PopupWithImage.js";
 
 import API from "./components/api.js";
 import Card from "./components/card.js";
@@ -18,13 +18,13 @@ let owner;
 
 const profilePopup = document.querySelector(".overlay_type_profile");
 const newCardPopup = document.querySelector(".overlay_type_card-add");
-// const imagePopup = document.querySelector(".overlay_type_picture");
+const imagePopup = document.querySelector(".overlay_type_picture");
 const avatarEditPopup = document.querySelector(".overlay_type_avatar-edit");
 
 const profileAvatar = document.querySelector(".profile__avatar");
 const profileName = document.querySelector(".profile__intro-title");
 const profileInfo = document.querySelector(".profile__intro-subtitle");
-const elements = document.querySelector(".elements");
+// const elements = document.querySelector(".elements");
 
 const inputName = document.querySelector("#overlay__form-input_line-one");
 const inputJob = document.querySelector("#overlay__form-input_line-two");
@@ -49,20 +49,27 @@ const MyNewCardPopupWithForm = new PopupWithForm(newCardPopup);
 MyNewCardPopupWithForm.setEventListeners();
 const MyAvatarPopupWithForm = new PopupWithForm(avatarEditPopup);
 MyAvatarPopupWithForm.setEventListeners();
+// const MyImagePopupWithImage = new PopupWithImage(imagePopup);
+// MyImagePopupWithImage.setEventListeners();
 const MyUserInfo = new UserInfo(UserInfoConfig);
+
+function doCard(cardSettings) {
+  let cardObject = new Card(cardSettings);
+  cardObject = cardObject.createCard();
+  return cardObject;
+  // MySection.addItem(cardObject);   /// ? ///
+}
 
 var testElements = [];
 const MySection = new Section(
   {
     items: testElements,
-    rerender: (element) => {
-      const cardObject = new Card(element);
-      return cardObject.createCard();
+    rerender: (cardSettings) => {
+      return doCard(cardSettings);
     },
   },
   ".elements"
 );
-MySection.renderAll();
 
 MyAPI.getInitialCards()
   .then((response) => {
@@ -81,7 +88,6 @@ MyAPI.getInitialCards()
         cardId: response[0][i]._id,
         ownerId: owner,
       };
-      MySection.addItem(MySection.rerender(cardSettings));
 
       // const cardObject = new Card(cardSettings);
       // cardObject.createCard();
@@ -89,17 +95,7 @@ MyAPI.getInitialCards()
       // elements.prepend(cardObject.card);
     }
 
-    // const MySection = new Section(
-    //   {
-    //     items: testElements,
-    //     rerender: (element) => {
-    //       const cardObject = new Card(element);
-    //       return cardObject.createCard();
-    //     },
-    //   },
-    //   ".elements"
-    // );
-    // MySection.renderAll();
+    MySection.renderAll(testElements);
 
     profileName.textContent = response[1].name;
     profileInfo.textContent = response[1].about;
@@ -154,7 +150,8 @@ function submitCardCreation(event) {
         owned: true,
         cardId: newCardId,
       };
-      MySection.addItem(MySection.rerender(cardSettings));
+
+      MySection.rerender(cardSettings);
 
       // const cardObject = new Card(cardSettings);
       // cardObject.createCard();

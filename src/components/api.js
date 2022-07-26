@@ -12,13 +12,19 @@ export default class API {
     this.headers = config.headers;
   }
 
+  // getUserInfo() {
+  //   return Promise.all([
+  //     fetch(this.baseUrl + "/users/me", {
+  //       method: "GET",
+  //       headers: this.headers,
+  //     }).then(this.checkResponse),
+  //   ]);
+  // }
   getUserInfo() {
-    return Promise.all([
-      fetch(this.baseUrl + "/users/me", {
-        method: "GET",
-        headers: this.headers,
-      }).then(this.checkResponse),
-    ]);
+    return fetch(this.baseUrl + "/users/me", {
+      method: "GET",
+      headers: this.headers,
+    }).then(this.checkResponse);
   }
 
   getInitialCards() {
