@@ -57,7 +57,6 @@ function doCard(cardSettings) {
   let cardObject = new Card(cardSettings);
   cardObject = cardObject.createCard();
   return cardObject;
-  // MySection.addItem(cardObject);   /// ? ///
 }
 
 var testElements = [];
@@ -127,9 +126,11 @@ function openProfilePopup(profilePopup) {
 function submitTitleChanges(event) {
   event.preventDefault();
   MyProfilePopupWithForm.toggleLoadingButton("Сохранение...");
-  MyUserInfo.setUserInfo({
-    name: inputName.value,
-    about: inputJob.value,
+  MyAPI.changeProfile(inputName.value, inputJob.value).then(() => {
+    MyUserInfo.setUserInfo({
+      name: inputName.value,
+      about: inputJob.value,
+    });
   });
   MyProfilePopupWithForm.close();
   MyProfilePopupWithForm.toggleLoadingButton("Сохранить");
