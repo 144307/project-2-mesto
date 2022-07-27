@@ -6,7 +6,7 @@ export default class Popup {
   }
 
   _resetFormErrros() {
-    console.log(this.overlay);
+    console.log("this.overlay", this.overlay);
     const errors = this.overlay.querySelectorAll(".overlay__form-error");
     for (let i = 0; i < errors.length; i++) {
       errors[i].textContent = "";
@@ -26,6 +26,7 @@ export default class Popup {
   // }
 
   open() {
+    console.log("popup.js open()");
     this.overlay.classList.add("overlay_opened");
     document.addEventListener("keydown", this._handleEscClose);
   }
@@ -38,8 +39,8 @@ export default class Popup {
   }
 
   _handleEscClose(event) {
+    console.log("popup.js _handleEscClose()");
     if (event.key === "Escape") {
-      console.log("popup.js _handleEscClose()");
       // this.close();
       const overlay = document.querySelector(".overlay_opened");
       overlay.classList.remove("overlay_opened");
@@ -48,6 +49,7 @@ export default class Popup {
   }
 
   setEventListeners() {
+    console.log("popup.js setEventListeners()");
     const closeButton = this.overlay.querySelector(".overlay__close-button");
     closeButton.addEventListener("click", () => {
       this.close();
@@ -58,6 +60,7 @@ export default class Popup {
         this.close();
       }
     });
+    // console.log(getEventListeners(this.overlay));
   }
 }
 

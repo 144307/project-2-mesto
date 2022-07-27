@@ -1,12 +1,12 @@
 // @ts-nocheck
 
-import PopupWithImage from "./PopupWithImage.js";
+// import PopupWithImage from "./PopupWithImage.js";
 
-const overlayImage = document.querySelector(".overlay__image-popup-photo");
-const imagePopup = document.querySelector(".overlay_type_picture");
+// const overlayImage = document.querySelector(".overlay__image-popup-photo");
+// const imagePopup = document.querySelector(".overlay_type_picture");
 
-const MyImagePopupWithImage = new PopupWithImage(imagePopup);
-MyImagePopupWithImage.setEventListeners();
+// const MyImagePopupWithImage = new PopupWithImage(imagePopup);
+// MyImagePopupWithImage.setEventListeners();
 
 export default class Card {
   constructor(settings) {
@@ -17,7 +17,8 @@ export default class Card {
     this._cardId = settings.cardId;
     this._ownerId = settings.ownerId;
     this.card = null;
-    this.ApiObject = settings.ApiObject;
+    this.apiObject = settings.apiObject;
+    this.testFunc = settings.testFunc;
   }
 
   createCard() {
@@ -50,7 +51,10 @@ export default class Card {
       deleteButton.setAttribute("style", "display: block");
     }
     const imageButton = card.querySelector(".card__image");
-    imageButton.addEventListener("click", this.openImagePopup);
+    imageButton.addEventListener("click", (event) => {
+      // this.openImagePopup(event, this.testFunc);
+      this.openImagePopup(event);
+    });
     this.card = card;
     return card;
   }
@@ -64,7 +68,8 @@ export default class Card {
 
   _toggleLike(likeButton, cardId, likes, counter) {
     if (!likeButton.currentTarget.classList.contains("card__heart_selected")) {
-      this.ApiObject.giveLike(cardId)
+      this.apiObject
+        .giveLike(cardId)
         .then((response) => {
           this._turnOnLike(likeButton.target);
           likes = response.likes.length;
@@ -75,7 +80,8 @@ export default class Card {
           console.error("Error:", error);
         });
     } else {
-      this.ApiObject.removeLike(cardId)
+      this.apiObject
+        .removeLike(cardId)
         .then((response) => {
           this._turnOffLike(likeButton.target);
           likes = response.likes.length;
@@ -91,7 +97,8 @@ export default class Card {
   removeCard(event, cardId) {
     console.log("removeCard ID =", cardId);
 
-    this.ApiObject.deleteCard(cardId)
+    this.apiObject
+      .deleteCard(cardId)
       .then((response) => {
         event.target.closest(".card").remove();
         console.log("testDeleting response =", response);
@@ -105,10 +112,10 @@ export default class Card {
     const imageSettings = {
       src: openButton.currentTarget.src,
       alt: openButton.currentTarget.alt,
-      image: overlayImage,
     };
 
-    MyImagePopupWithImage.open(imageSettings);
+    // MyImagePopupWithImage.open(imageSettings);
+    this.testFunc(imageSettings);
   }
 }
 

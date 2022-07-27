@@ -49,8 +49,6 @@ const MyNewCardPopupWithForm = new PopupWithForm(newCardPopup);
 MyNewCardPopupWithForm.setEventListeners();
 const MyAvatarPopupWithForm = new PopupWithForm(avatarEditPopup);
 MyAvatarPopupWithForm.setEventListeners();
-// const MyImagePopupWithImage = new PopupWithImage(imagePopup);
-// MyImagePopupWithImage.setEventListeners();
 const MyUserInfo = new UserInfo(UserInfoConfig);
 
 function doCard(cardSettings) {
@@ -70,32 +68,6 @@ const MySection = new Section(
   ".elements"
 );
 
-function toggleLike(likeButton, cardId, likes, counter) {
-  if (!likeButton.currentTarget.classList.contains("card__heart_selected")) {
-    MyAPI.giveLike(cardId)
-      .then((response) => {
-        this._turnOnLike(likeButton.target);
-        likes = response.likes.length;
-        counter.textContent = likes;
-        console.log("likes =", likes);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  } else {
-    MyAPI.removeLike(cardId)
-      .then((response) => {
-        this._turnOffLike(likeButton.target);
-        likes = response.likes.length;
-        counter.textContent = likes;
-        console.log("likes =", likes);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }
-}
-
 MyAPI.getInitialCards()
   .then((response) => {
     owner = response[1]._id;
@@ -105,6 +77,11 @@ MyAPI.getInitialCards()
       if (owner === response[0][i].owner._id) {
         owned = true;
       }
+
+      const MyImagePopupWithImage = new PopupWithImage(imagePopup);
+      // debugger;
+      MyImagePopupWithImage.setEventListeners();
+
       const cardSettings = {
         name: response[0][i].name,
         link: response[0][i].link,
@@ -112,8 +89,10 @@ MyAPI.getInitialCards()
         owned: owned,
         cardId: response[0][i]._id,
         ownerId: owner,
-        ApiObject: MyAPI,
-        // toggleLikeFunc: (this) =>{toggleLike();},
+        apiObject: MyAPI,
+        testFunc: (imageSettings) => {
+          MyImagePopupWithImage.open(imageSettings);
+        },
       };
 
       // const cardObject = new Card(cardSettings);
@@ -121,10 +100,6 @@ MyAPI.getInitialCards()
       testElements.push(cardSettings);
       // elements.prepend(cardObject.card);
     }
-
-    // rerender: (cardSettings) => {
-    //   return doCard(cardSettings);
-    // },
 
     MySection.renderAll(testElements);
 
