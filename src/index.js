@@ -70,6 +70,32 @@ const MySection = new Section(
   ".elements"
 );
 
+function toggleLike(likeButton, cardId, likes, counter) {
+  if (!likeButton.currentTarget.classList.contains("card__heart_selected")) {
+    MyAPI.giveLike(cardId)
+      .then((response) => {
+        this._turnOnLike(likeButton.target);
+        likes = response.likes.length;
+        counter.textContent = likes;
+        console.log("likes =", likes);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  } else {
+    MyAPI.removeLike(cardId)
+      .then((response) => {
+        this._turnOffLike(likeButton.target);
+        likes = response.likes.length;
+        counter.textContent = likes;
+        console.log("likes =", likes);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+}
+
 MyAPI.getInitialCards()
   .then((response) => {
     owner = response[1]._id;
@@ -86,6 +112,8 @@ MyAPI.getInitialCards()
         owned: owned,
         cardId: response[0][i]._id,
         ownerId: owner,
+        ApiObject: MyAPI,
+        // toggleLikeFunc: (this) =>{toggleLike();},
       };
 
       // const cardObject = new Card(cardSettings);
@@ -93,6 +121,10 @@ MyAPI.getInitialCards()
       testElements.push(cardSettings);
       // elements.prepend(cardObject.card);
     }
+
+    // rerender: (cardSettings) => {
+    //   return doCard(cardSettings);
+    // },
 
     MySection.renderAll(testElements);
 

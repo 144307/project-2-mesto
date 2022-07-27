@@ -1,22 +1,10 @@
 // @ts-nocheck
 
 import PopupWithImage from "./PopupWithImage.js";
-import API from "./api.js";
 
 const overlayImage = document.querySelector(".overlay__image-popup-photo");
 const imagePopup = document.querySelector(".overlay_type_picture");
 
-const APIconfig = {
-  baseUrl: "https://nomoreparties.co/v1/plus-cohort-6",
-  headers: {
-    authorization: "230ea98f-ed00-4030-a408-2ee71d4ed161",
-    "Content-Type": "application/json",
-  },
-};
-
-///
-
-const MyAPI = new API(APIconfig);
 const MyImagePopupWithImage = new PopupWithImage(imagePopup);
 MyImagePopupWithImage.setEventListeners();
 
@@ -29,6 +17,7 @@ export default class Card {
     this._cardId = settings.cardId;
     this._ownerId = settings.ownerId;
     this.card = null;
+    this.ApiObject = settings.ApiObject;
   }
 
   createCard() {
@@ -75,7 +64,7 @@ export default class Card {
 
   _toggleLike(likeButton, cardId, likes, counter) {
     if (!likeButton.currentTarget.classList.contains("card__heart_selected")) {
-      MyAPI.giveLike(cardId)
+      this.ApiObject.giveLike(cardId)
         .then((response) => {
           this._turnOnLike(likeButton.target);
           likes = response.likes.length;
@@ -85,9 +74,8 @@ export default class Card {
         .catch((error) => {
           console.error("Error:", error);
         });
-      return likes;
     } else {
-      MyAPI.removeLike(cardId)
+      this.ApiObject.removeLike(cardId)
         .then((response) => {
           this._turnOffLike(likeButton.target);
           likes = response.likes.length;
@@ -97,14 +85,13 @@ export default class Card {
         .catch((error) => {
           console.error("Error:", error);
         });
-      return likes;
     }
   }
 
   removeCard(event, cardId) {
     console.log("removeCard ID =", cardId);
 
-    MyAPI.deleteCard(cardId)
+    this.ApiObject.deleteCard(cardId)
       .then((response) => {
         event.target.closest(".card").remove();
         console.log("testDeleting response =", response);
